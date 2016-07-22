@@ -1,5 +1,5 @@
 # WhiskSwiftTools
-A collection of tools to help developers use OpenWhisk on OS X.
+A collection of tools to help developers use OpenWhisk on OS X.  Implemented in Swift 3 because Swift 3.
 
 More documentation coming soon!
 

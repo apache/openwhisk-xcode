@@ -8,7 +8,7 @@ More documentation coming soon!
 ### wsktool  
 A small CLI tool that allows developers to install OpenWhisk "projects" into the OpenWhisk backend.  A project contains sets of actions (JS and Swift), triggers, and rules with a single command `wsktool install`.  You can do the opposite with `wsktool uninstall`.  You can see an [example here](https://github.com/openwhisk/openwhisk-package-jira/tree/master/src) Documentation on the structure of an OpenWhisk project is coming soon.  
 
-wsktool supports referencing depedencies on OpenWhisk projects in Github.  It will automatically download, bind, and install these with the main project.
+wsktool supports referencing dependencies on OpenWhisk projects in Github.  It will automatically download, bind, and install these with the main project.
 
 ### WhiskKit
 A Swift 3 set of protocols and classes that lets you implement actions in Xcode.  Provides an Xcode to OpenWhisk bridge via wsktool that allows you to directly install Xcode-based OpenWhisk actions into OpenWhisk.

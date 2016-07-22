@@ -15,3 +15,11 @@ A Swift 3 set of protocols and classes that lets you implement actions in Xcode.
 This code is built using the Xcode 8 beta 2 with the Swift 3 tech preview 2 toolchain.  
 
 There is a dependency on an ObjC project [ZipArchive](https://github.com/ZipArchive/ZipArchive).  OS X CLI targets and frameworks don't play together very well. The "easiest" way to reference it is to add the code manually to WhiskSwiftTools.  Clone ZipArchive and install per the documentations on the ZipArchive readme. Copy the SSZipArchive folder into the project folder and link to the libz library. WhiskSwiftTOols includes bridging header file you can reference.
+
+### License
+
+Copyright 2015-2016 IBM Corporation
+
+Licensed under the [Apache License, Version 2.0 (the "License")](http://www.apache.org/licenses/LICENSE-2.0.html).
+
+Unless required by applicable law or agreed to in writing, software distributed under the license is distributed on an "as is" basis, without warranties or conditions of any kind, either express or implied. See the license for the specific language governing permissions and limitations under the license.

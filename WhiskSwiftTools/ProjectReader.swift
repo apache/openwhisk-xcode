@@ -183,6 +183,40 @@ public class ProjectReader {
         
     }
     
+    public func readRootDependencies(clone: Bool) throws {
+        
+        let path = projectPath+"/"+BindingsFileName
+        let json = try ManifestReader.parseJson(atPath: path)
+        
+        
+        if let dependencies = json["dependencies"] {
+            for dependency in dependencies as! Array<[String:AnyObject]> {
+                guard let url = dependency["url"] as? NSString else {
+                    clearAll()
+                    throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of dependency missing url")
+                }
+                
+                var repo = url
+                
+                if url.pathExtension == "git" {
+                    repo = String((repo as String).characters.dropLast(4))
+                }
+                
+                let name = repo.lastPathComponent
+                
+                var ver = "master"
+                if let version = dependency["version"] as? NSString {
+                    ver = version as String
+                }
+                
+                let dep = Dependency(name: name as NSString, url: repo, version: ver)
+                dependenciesDict[name] = dep
+            }
+        }
+        
+        try readDependencies(clone: clone)
+    }
+    
     public func readProjectDirectory() throws {
         // read project directory
         try readDirectory(dirPath: projectPath, isDependency: false)
@@ -190,14 +224,16 @@ public class ProjectReader {
         // read independent directories
     }
     
-    public func readDependencies() throws {
+    public func readDependencies(clone: Bool) throws {
         for (name, dependency) in dependenciesDict {
             
             let group = DispatchGroup()
             
             let zipFilePath = "\(dependency.url)/archive/\(dependency.version).zip"
-            try Git.cloneGitRepo(repo: zipFilePath, toPath: projectPath+"/Packages/", group: group)
-
+            if clone == true {
+                try Git.cloneGitRepo(repo: zipFilePath, toPath: projectPath+"/Packages/", group: group)
+            }
+            
             switch group.wait(timeout: DispatchTime.distantFuture) {
             case DispatchTimeoutResult.Success:
                 print("Clone repo \(dependency.url) success")
@@ -355,6 +391,7 @@ public class ProjectReader {
             
             // Check these items for a root manifest only
             if prefix == "" {
+                
                 // process packages
                 if let packages = json["bindings"] {
                     for package in packages as! Array<[String:AnyObject]> {
@@ -401,31 +438,6 @@ public class ProjectReader {
                         ruleDict[itemName as NSString] = item
                     }
                     
-                }
-                
-                if let dependencies = json["dependencies"] {
-                    for dependency in dependencies as! Array<[String:AnyObject]> {
-                        guard let url = dependency["url"] as? NSString else {
-                            clearAll()
-                            throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of dependency missing url")
-                        }
-                        
-                        var repo = url
-                        
-                        if url.pathExtension == "git" {
-                            repo = String((repo as String).characters.dropLast(4))
-                        }
-                        
-                        let name = repo.lastPathComponent
-                        
-                        var ver = "master"
-                        if let version = dependency["version"] as? NSString {
-                            ver = version as String
-                        }
-                        
-                        let dep = Dependency(name: name as NSString, url: repo, version: ver)
-                        dependenciesDict[name] = dep
-                    }
                 }
             }
             
@@ -491,6 +503,7 @@ public class ProjectReader {
         sequenceDict.removeAll()
         manifestDict.removeAll()
         bindingsDict.removeAll()
+        dependenciesDict.removeAll()
     }
 }
 

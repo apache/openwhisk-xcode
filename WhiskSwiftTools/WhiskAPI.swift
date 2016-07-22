@@ -347,17 +347,17 @@ class WhiskAPI {
             } else {
                 print("Disable response for rule \(name): \(response)")
                 
-                DispatchQueue.main.after(when: DispatchTime.now() + 2.0) {
+                group.enter()
+                //DispatchQueue.main.after(when: DispatchTime.now() + 0.5) {
                     
                     do {
-                        group.enter()
                         try self.networkManager.deleteCall(url: urlStr, path: path, group: group)
                     } catch {
                         print("Error deleting rule \(name), error: \(error)")
                     }
                     
                     
-                }
+               // }
             }
             
         }
@@ -470,7 +470,7 @@ class WhiskNetworkManager {
         
     }
     
-    func postCall(url: String, path: String, parameters: [String:AnyObject]?, group: DispatchGroup, callback: (response: [String:Any]?, error: ErrorProtocol?) -> Void) throws {
+    func postCall(url: String, path: String, parameters: [String:AnyObject]?, group: DispatchGroup?, callback: (response: [String:Any]?, error: ErrorProtocol?) -> Void) throws {
         
         // encode path
         guard let encodedPath = path.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else {
@@ -512,7 +512,9 @@ class WhiskNetworkManager {
                 callback(response: ["status":statusCode, "description":"Post call success"], error: nil)
             }
             
-            group.leave()
+            if let group = group {
+                group.leave()
+            }
             
         }
         

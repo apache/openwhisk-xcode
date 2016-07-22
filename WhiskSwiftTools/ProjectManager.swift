@@ -48,10 +48,10 @@ public class ProjectManager {
             queue.async(qos: .userInitiated) {
                 do {
                     self.projectReader?.clearAll()
-                    
+
+                    try self.projectReader?.readRootDependencies(clone: true)
                     try self.projectReader?.readProjectDirectory()
-                    try self.projectReader?.readDependencies()
-                    
+                                        
                     self.projectReader?.dumpProjectStructure()
                     
                     try self.installPackages()
@@ -92,8 +92,8 @@ public class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
+                    try self.projectReader?.readRootDependencies(clone: false)
                     try self.projectReader?.readProjectDirectory()
-                    try self.projectReader?.readDependencies()
                     self.projectReader?.dumpProjectStructure()
                     
                     try self.deleteRules()

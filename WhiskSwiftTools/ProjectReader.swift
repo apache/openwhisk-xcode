@@ -30,6 +30,7 @@ public enum WhiskProjectError: ErrorProtocol {
     case MalformedManifestFile(name: String, cause: String)
     case RuleStateError(type: String, cause: String)
     case GitRequestError(cause: String)
+    case UnsupportedFeedType(cause: String)
 }
 
 enum Runtime {
@@ -48,6 +49,7 @@ struct Package {
 
 struct Trigger {
     let name: NSString
+    let feed: NSString?
     let parameters: Array<[String:AnyObject]>?
 }
 
@@ -418,7 +420,9 @@ public class ProjectReader {
                         }
                         
                         let parameters = trigger["parameters"] as? Array<[String:AnyObject]>
-                        let item = Trigger(name: itemName as NSString, parameters: parameters)
+
+                        let feed = trigger["feed"] as? NSString
+                        let item = Trigger(name: itemName as NSString, feed: feed, parameters: parameters)
                         triggerDict[itemName as NSString] = item
                     }
                     

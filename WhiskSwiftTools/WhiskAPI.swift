@@ -59,6 +59,9 @@ class WhiskAPI {
     // Default value for Whisk backend
     var DefaultBaseURL = "https://openwhisk.ng.bluemix.net/api/v1/"
     
+    // supported Feeds
+    let AlarmTriggerFeed = "/whisk.system/alarms/alarm"
+    
     // user settable backend
     var whiskBaseURL: String?
     
@@ -164,6 +167,79 @@ class WhiskAPI {
         group.enter()
         try networkManager.putCall(url: urlStr, path: path, parameters: whiskParameters, group: group)
         
+    }
+    
+    func createFeed(name: String, namespace: String, trigger: Trigger, group: DispatchGroup) throws {
+        
+        switch trigger.feed as! String  {
+        case AlarmTriggerFeed:
+            try createAlarmsFeed(name: name, namespace: namespace, trigger: trigger, group: group)
+        default:
+            throw WhiskProjectError.UnsupportedFeedType(cause: "Feed trigger \(trigger.feed) not supported")
+        }
+    }
+    
+    func createAlarmsFeed(name: String, namespace: String, trigger: Trigger, group: DispatchGroup) throws {
+        let urlStr: String = whiskBaseURL != nil ? whiskBaseURL! : DefaultBaseURL
+        let path = "namespaces/\(namespace)/triggers/\(name)"
+        
+        let annotations: [String:AnyObject] = ["value": trigger.feed!, "key": "feed"]
+        let parameters: [String: [[String:AnyObject]]] = ["annotations": [annotations]]
+        
+        group.enter()
+        try networkManager.putCall(url: urlStr, path: path, parameters: parameters, group: group) { response, error in
+            
+            if let error = error {
+                print("Error creating trigger \(name) for feed \(trigger.feed), error: \(error)")
+            } else {
+                print("Setting up feed for trigger \(name): \(response)")
+                
+                group.enter()
+                //DispatchQueue.main.after(when: DispatchTime.now() + 0.5) {
+                
+                let feedPath = "namespaces/whisk.system/actions/alarms/alarm"
+                do {
+                    
+                    var params: [String:AnyObject]? = nil
+                    
+                    if let feedParams = trigger.parameters {
+                        params = [String:AnyObject]()
+                        for obj in feedParams {
+                            let dict = obj as [String:AnyObject]
+                            for (name, value) in dict {
+                                if name.lowercased() == "cron" {
+                                    params?["cron"] = value
+                                } else if name == "trigger_payload" {
+                                    params?["trigger_payload"] = value
+                                }
+                            }
+                        }
+                        
+                        params?["authKey"] = self.networkManager.whiskCredentials.accessKey+":"+self.networkManager.whiskCredentials.accessToken
+                        params?["lifecycleEvent"] = "CREATE"
+                        params?["triggerName"] = "/"+namespace+"/"+name
+                    }
+                    
+                    
+                    try self.networkManager.postCall(url: urlStr, path: feedPath, parameters: params, group: group) {
+                        response, error in
+                        
+                        if let error = error {
+                            print("Error creating feed for trigger \(name), error: \(error)")
+                        } else {
+                            print("Success creating feed \(name), \(response)")
+                        }
+                        
+                    }
+                } catch {
+                    print("Error creating feed for trigger \(name), error: \(error)")
+                }
+                
+                
+                // }
+            }
+            
+        }
     }
     
     func createAction(qualifiedName: String, kind: String, code: String, parameters: Array<[String:AnyObject]>? = nil, group: DispatchGroup) throws {
@@ -330,7 +406,70 @@ class WhiskAPI {
         let path = "namespaces/\(namespace)/triggers/\(name)"
         
         group.enter()
-        try networkManager.deleteCall(url: urlStr, path: path, group: group)
+        try networkManager.deleteCall(url: urlStr, path: path, group: group) { response, error in
+            
+            if let error = error {
+                print("Error deleting trigger \(name), \(error)")
+            } else if let response = response {
+                
+                print("Got response from deleting trigger \(response)")
+                
+                if let annotations = response["annotations"] as? [[String:AnyObject]] {
+                    for note in annotations {
+                        
+                        var isFeed = false
+                        var feed = ""
+                        for (att, value) in note {
+                            if att == "key" {
+                                if value as! String == "feed" {
+                                    isFeed = true
+                                }
+                            } else if att == "value" {
+                                feed = value as! String
+                            }
+                        }
+                        
+                        if isFeed == true {
+                            // delete the alarm
+                            if feed == self.AlarmTriggerFeed {
+                                do {
+                                    try self.deleteAlarmsFeed(namespace: namespace, name: name, group: group)
+                                } catch {
+                                    print("Error deleting trigger feed \(name): \(error)")
+                                }
+                            }
+                        }
+                        
+                        print("Got annotation \(note)")
+                    }
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    func deleteAlarmsFeed(namespace: String, name: String, group: DispatchGroup) throws {
+        var params = [String:AnyObject]()
+        
+        params["authKey"] = self.networkManager.whiskCredentials.accessKey+":"+self.networkManager.whiskCredentials.accessToken
+        params["lifecycleEvent"] = "DELETE"
+        params["triggerName"] = namespace+"/"+name
+        
+        let urlStr: String = whiskBaseURL != nil ? whiskBaseURL! : DefaultBaseURL
+        let path = "namespaces/whisk.system/actions/alarms/alarm"
+        
+        group.enter()
+        try networkManager.postCall(url: urlStr, path: path, parameters: params, group: group) { response, error in
+            
+            if let error = error {
+                print("Error deleting alarm feed \(error)")
+            } else {
+                print("Succes deleting alarm feed \(response)")
+            }
+            
+        }
         
     }
     
@@ -349,15 +488,15 @@ class WhiskAPI {
                 
                 group.enter()
                 //DispatchQueue.main.after(when: DispatchTime.now() + 0.5) {
-                    
-                    do {
-                        try self.networkManager.deleteCall(url: urlStr, path: path, group: group)
-                    } catch {
-                        print("Error deleting rule \(name), error: \(error)")
-                    }
-                    
-                    
-               // }
+                
+                do {
+                    try self.networkManager.deleteCall(url: urlStr, path: path, group: group)
+                } catch {
+                    print("Error deleting rule \(name), error: \(error)")
+                }
+                
+                
+                // }
             }
             
         }
@@ -378,7 +517,7 @@ class WhiskNetworkManager {
         self.urlSession = session
     }
     
-    func putCall(url: String, path: String, parameters: [String:AnyObject]? = nil, group: DispatchGroup) throws {
+    func putCall(url: String, path: String, parameters: [String:AnyObject]? = nil, group: DispatchGroup, callback: ((response: [String:Any]?, error: ErrorProtocol?) -> Void)? = nil) throws  {
         
         let overwritePath = path+"?overwrite=true"
         
@@ -399,6 +538,8 @@ class WhiskNetworkManager {
         
         if let parameters = parameters {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters as AnyObject, options: JSONSerialization.WritingOptions())
+            
+            print("Sending body \(request.httpBody)")
         }
         
         let task = urlSession.dataTask(with: request) {
@@ -413,10 +554,19 @@ class WhiskNetworkManager {
             
             if let error = error {
                 print("Error performing network call \(error), status: \(statusCode)")
-                return
+                
+                if let callback = callback {
+                    callback(response: nil, error: error)
+                } else {
+                    return
+                }
                 
             } else {
                 print("Success calling PUT \(url), status:\(statusCode)")
+                
+                if let callback = callback {
+                    callback(response: ["status":statusCode, "msg":"PUT call success"], error: nil)
+                }
             }
             
             group.leave()
@@ -427,7 +577,7 @@ class WhiskNetworkManager {
         
     }
     
-    func deleteCall(url: String, path: String,group: DispatchGroup) throws {
+    func deleteCall(url: String, path: String,group: DispatchGroup, callback: ((response: [String:AnyObject]?, error: ErrorProtocol?) -> Void)? = nil) throws {
         
         // encode path
         guard let encodedPath = path.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else {
@@ -460,6 +610,23 @@ class WhiskNetworkManager {
                 
             } else {
                 print("Success calling DELETE \(url), status:\(statusCode)")
+            }
+            
+            
+            
+            if let callback = callback {
+                if let data = data {
+                    do {
+                        if let resp = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? [String:AnyObject] {
+                            callback(response: resp, error: nil)
+                        }
+                    } catch {
+                        print("Error in DELETE \(error)")
+                    }
+                } else {
+                    callback(response: ["status":statusCode], error: nil)
+                }
+                
             }
             
             group.leave()

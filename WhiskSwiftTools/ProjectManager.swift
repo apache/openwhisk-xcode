@@ -48,10 +48,10 @@ public class ProjectManager {
             queue.async(qos: .userInitiated) {
                 do {
                     self.projectReader?.clearAll()
-
+                    
                     try self.projectReader?.readRootDependencies(clone: true)
                     try self.projectReader?.readProjectDirectory()
-                                        
+                    
                     self.projectReader?.dumpProjectStructure()
                     
                     try self.installPackages()
@@ -260,7 +260,11 @@ public class ProjectManager {
         let group = DispatchGroup()
         
         for (name, trigger) in triggers {
-            try whisk.createTrigger(name: name as String, namespace: namespace, parameters: trigger.parameters, group: group)
+            if let _ = trigger.feed {
+                try whisk.createFeed(name: name as String, namespace: namespace, trigger: trigger, group: group)
+            } else {
+                try whisk.createTrigger(name: name as String, namespace: namespace, parameters: trigger.parameters, group: group)
+            }
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {

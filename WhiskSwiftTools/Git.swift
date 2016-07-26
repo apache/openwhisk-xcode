@@ -36,7 +36,7 @@ class Git {
             if (error == nil) {
                 // Success
                 let statusCode = (response as! HTTPURLResponse).statusCode
-                print("Cloning Git Status Code: \(statusCode)")
+                print("Repo \(repo) successfully cloned with status code: \(statusCode)")
                 
                 // This is your file-variable:
                 // data
@@ -53,13 +53,15 @@ class Git {
                         
                         try fileManager.removeItem(atPath: zipPath)
                     } catch {
-                        print("Error processing zip file at \(zipPath)")
+                        print("Error extracting zip file at \(zipPath)")
                     }
                     
+                } else {
+                    print("Failure when cloning repo \(repo). Response has no data.")
                 }
             } else {
                 // Failure
-                print("Faulure: %@", error?.localizedDescription);
+                print("Failure cloning \(repo): %@", error?.localizedDescription);
             }
             
             group.leave()

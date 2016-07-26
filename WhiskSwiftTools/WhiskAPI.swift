@@ -192,8 +192,6 @@ class WhiskAPI {
             if let error = error {
                 print("Error creating trigger \(name) for feed \(trigger.feed), error: \(error)")
             } else {
-                print("Setting up feed for trigger \(name): \(response)")
-                
                 group.enter()
                 //DispatchQueue.main.after(when: DispatchTime.now() + 0.5) {
                 
@@ -226,8 +224,6 @@ class WhiskAPI {
                         
                         if let error = error {
                             print("Error creating feed for trigger \(name), error: \(error)")
-                        } else {
-                            print("Success creating feed \(name), \(response)")
                         }
                         
                     }
@@ -412,8 +408,6 @@ class WhiskAPI {
                 print("Error deleting trigger \(name), \(error)")
             } else if let response = response {
                 
-                print("Got response from deleting trigger \(response)")
-                
                 if let annotations = response["annotations"] as? [[String:AnyObject]] {
                     for note in annotations {
                         
@@ -440,7 +434,6 @@ class WhiskAPI {
                             }
                         }
                         
-                        print("Got annotation \(note)")
                     }
                 }
                 
@@ -484,7 +477,6 @@ class WhiskAPI {
             if let error = error {
                 print("Error disabling rule \(name), error: \(error)")
             } else {
-                print("Disable response for rule \(name): \(response)")
                 
                 group.enter()
                 //DispatchQueue.main.after(when: DispatchTime.now() + 0.5) {
@@ -539,7 +531,6 @@ class WhiskNetworkManager {
         if let parameters = parameters {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters as AnyObject, options: JSONSerialization.WritingOptions())
             
-            print("Sending body \(request.httpBody)")
         }
         
         let task = urlSession.dataTask(with: request) {
@@ -553,8 +544,6 @@ class WhiskNetworkManager {
             }
             
             if let error = error {
-                print("Error performing network call \(error), status: \(statusCode)")
-                
                 if let callback = callback {
                     callback(response: nil, error: error)
                 } else {
@@ -562,8 +551,6 @@ class WhiskNetworkManager {
                 }
                 
             } else {
-                print("Success calling PUT \(url), status:\(statusCode)")
-                
                 if let callback = callback {
                     callback(response: ["status":statusCode, "msg":"PUT call success"], error: nil)
                 }
@@ -609,7 +596,6 @@ class WhiskNetworkManager {
                 return
                 
             } else {
-                print("Success calling DELETE \(url), status:\(statusCode)")
             }
             
             
@@ -674,7 +660,6 @@ class WhiskNetworkManager {
                 return
                 
             } else {
-                print("Success calling POST \(url), status:\(statusCode)")
                 
                 callback(response: ["status":statusCode, "description":"Post call success"], error: nil)
             }

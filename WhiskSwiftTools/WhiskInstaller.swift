@@ -34,13 +34,8 @@ class WhiskInstaller {
         let skipDashIndex = argument.index(argument.startIndex, offsetBy: offset)
         let (option, value) = consoleIO.getOption(option: argument.substring(from: skipDashIndex))
         
-        print("Argc: \(argCount) Option \(option) value: \(value)")
-        print("Current directory is \(getCurrentDirectory())")
-        
         switch option {
         case .Build:
-            print("Gonna build this mother")
-            
             do {
                 if let pm = try setupProjectManager() {
                     try pm.deployProject()

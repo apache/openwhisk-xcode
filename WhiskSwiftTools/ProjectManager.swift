@@ -52,7 +52,7 @@ public class ProjectManager {
                     try self.projectReader?.readRootDependencies(clone: true)
                     try self.projectReader?.readProjectDirectory()
                     
-                    self.projectReader?.dumpProjectStructure()
+                    //self.projectReader?.dumpProjectStructure()
                     
                     try self.installPackages()
                     try self.installTriggers()
@@ -63,7 +63,7 @@ public class ProjectManager {
                     
                     group.leave()
                 } catch {
-                    print("Error \(error)")
+                    print("Error deploying project \(error)")
                 }
                 
             }
@@ -94,7 +94,7 @@ public class ProjectManager {
                     
                     try self.projectReader?.readRootDependencies(clone: false)
                     try self.projectReader?.readProjectDirectory()
-                    self.projectReader?.dumpProjectStructure()
+                   // self.projectReader?.dumpProjectStructure()
                     
                     try self.deleteRules()
                     try self.deleteActionsAndSequences()
@@ -105,7 +105,7 @@ public class ProjectManager {
                     
                     group.leave()
                 } catch {
-                    print("Error \(error)")
+                    print("Error deleting project \(error)")
                 }
                 
             }
@@ -134,7 +134,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("Install sequence success")
+            print("Sequences installed successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("Install sequence timed out")
@@ -154,7 +154,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("Install packages success")
+            print("Packages installed successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("Install pacakges timed out")
@@ -176,7 +176,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("delete packages success")
+            print("Packages deleted successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("delete packages timed out")
@@ -197,7 +197,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("Install rules success")
+            print("Rules installed successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("Install rules timed out")
@@ -219,7 +219,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("enable success")
+            print("Rules enabled successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("enable timed out")
@@ -243,7 +243,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("delete rules success")
+            print("Rules deleted successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("delete rules timed out")
@@ -269,7 +269,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("install triggers success")
+            print("Triggers installed successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("install timed out")
@@ -290,7 +290,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("delete triggers success")
+            print("Triggers deleted successfully success")
             break
         case DispatchTimeoutResult.TimedOut:
             print("delete triggers timed out")
@@ -335,7 +335,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("Install actions success")
+            print("Actions installed sucessfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("Install actions timed out")
@@ -360,7 +360,7 @@ public class ProjectManager {
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
         case DispatchTimeoutResult.Success:
-            print("delete actions and sequences success")
+            print("Actions and sequences deleted successfully")
             break
         case DispatchTimeoutResult.TimedOut:
             print("delete actions and sequences timed out")

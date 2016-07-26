@@ -63,7 +63,6 @@ public class WhiskTokenizer {
                             let fileStr = try String(contentsOfFile: fullPath)
                             if let actionArray = getActions(str: fileStr) {
                                 for action in actionArray {
-                                    print("action: \(action.actionName), code: \(action.actionCode)")
                                     
                                     actions.append(action)
                                     
@@ -107,7 +106,7 @@ public class WhiskTokenizer {
             // print("Scan location is \(scanner.scanLocation)")
             
             guard let line = line else {
-                print("Line is somehow null, quitting")
+                print("Xcode To Whisk: Error, line from tokenizer is nil, aborting.")
                 return nil
             }
             
@@ -146,8 +145,6 @@ public class WhiskTokenizer {
                     }
                     
                 case .parseAction:
-                    
-                    print("ParseAction: \(trimmedLine)")
                     
                     var lookingForLeftBracket = false
                     if leftBracketCount == 0 {

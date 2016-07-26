@@ -111,12 +111,10 @@ public class ProjectReader {
                     
                     switch group.wait(timeout: DispatchTime.distantFuture) {
                     case DispatchTimeoutResult.Success:
-                        print("Cloning project repo success")
                         let projectName = (repo as NSString).lastPathComponent
                         projectPath = "\(path)/\(projectName)-\(release)/src"
                         break
                     case DispatchTimeoutResult.TimedOut:
-                        print("Cloning project repo timed out")
                         throw WhiskProjectError.GitRequestError(cause: "Failure cloning repo \(repo): request timed out.")
                     }
                     
@@ -129,8 +127,6 @@ public class ProjectReader {
         } else {
             projectPath = path
         }
-        
-        print("Project path \(projectPath!)")
     }
     
     public func dumpProjectStructure() {
@@ -238,13 +234,11 @@ public class ProjectReader {
             
             switch group.wait(timeout: DispatchTime.distantFuture) {
             case DispatchTimeoutResult.Success:
-                print("Clone repo \(dependency.url) success")
                 let packagePath = (name as String)+"-"+(dependency.version as String)
                 let depPath = projectPath+"/Packages/"+packagePath+"/src"
                 try readDirectory(dirPath: depPath, isDependency: true)
                 break
             case DispatchTimeoutResult.TimedOut:
-                print("Clone \(dependency.url) timed out")
                 break
             }
             
@@ -255,7 +249,6 @@ public class ProjectReader {
         let fileManager = FileManager.default
         if let enumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(atPath: path) {
             while let item = enumerator.nextObject() as? NSString {
-                print("Inspecting \(item)")
                 if item.pathComponents.count == 1 {
                     if item.pathExtension == "xcodeproj" {
                         return true

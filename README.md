@@ -25,17 +25,16 @@ _ Ignored files
           
 ```
 
-wsktool looks for a `src` directory in the project home. It will walk this directory and install/delete OpenWhisk actions, triggers, and rules using the following conventions:
+`wsktool` looks for a `src` directory in the project home. It will walk this directory and install/delete OpenWhisk actions, triggers, and rules using the following conventions:
 
 * Actions will be installed for each source code file under src using the filename as the action name.  The file extension indicate the desired runtime.
 * Source code directly underneath src are installed without specifying a namespace or package
 * Directories underneath src indicate packages.  The package name is the directory name
 * Source code inside package directories are installed as members of the package
-* The `root-manifest.json` contains definitions for triggers, rules, sequences, and action parameters. You can also declare depedencies on other OpenWhisk packages installed in GitHub.
-* The `<package-name>-manifest.json` contains package specific settings for actions
-
-`wsktool` supports referencing dependencies on OpenWhisk projects in Github.  It will automatically download, bind, and install these with the main project.
-
+* The `root-manifest.json` contains definitions for triggers, rules, sequences, action parameters, and special runtime settings, e.g. Swift3 instead of Swift 2.
+* You can also declare dependencies on other OpenWhisk packages installed in GitHub in the `root-manifest.json`. `wsktool` will automatically download, bind, and install these with the main project. 
+* The `<package-name>-manifest.json` contains package specific settings for actions.  Settings here will override settings in `root-manifest.json`.
+  
 ### WhiskKit
 A Swift 3 set of protocols and classes that lets you implement actions in Xcode.  Provides an Xcode to OpenWhisk bridge via wsktool that allows you to directly install WhiskKit actions into OpenWhisk.
 

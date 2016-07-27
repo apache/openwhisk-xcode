@@ -43,7 +43,17 @@ class ConsoleIO {
         let executableName = (Process.arguments[0] as NSString).lastPathComponent
         
         print ("usage:")
-        print ("\(executableName) build")
+        print ("To install a project:")
+        print ("=====================")
+        print ("\(executableName) install (for current directory)")
+        print ("or")
+        print ("\(executableName) install <project directory>")
+        print ("To uninstall a project:")
+        print ("=======================")
+        print ("\(executableName) uninstall (for current directory)")
+        print ("or")
+        print ("\(executableName) uninstall <project directory>")
+        
         print ("Type \(executableName) -h or --help to show usage information")
     }
     

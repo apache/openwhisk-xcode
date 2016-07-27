@@ -19,10 +19,19 @@ import Foundation
 class WhiskInstaller {
     
     let consoleIO = ConsoleIO()
+    var projectPath: String!
+    
+    init() {
+        projectPath = getCurrentDirectory()
+    }
     
     func staticMode() {
         let argCount = Process.argc
         let argument = Process.arguments[1]
+
+        if argCount > 2 {
+            projectPath = NSString(string: Process.arguments[2]).expandingTildeInPath as String
+        }
         
         var offset = 0
         if argument.hasPrefix("--") {
@@ -63,8 +72,8 @@ class WhiskInstaller {
     }
     
     func getCurrentDirectory() -> String {
-        //return FileManager.default.currentDirectoryPath
-        return "/Users/pcastro/Desktop/ow-projects"
+        return FileManager.default.currentDirectoryPath
+        //return "/Users/pcastro/Desktop/ow-projects"
     }
     
     func setupProjectManager() throws -> ProjectManager? {
@@ -88,7 +97,7 @@ class WhiskInstaller {
             
             if let tokens = tokens, namespace = namespace {
                 let credentials = WhiskCredentials(accessKey: tokens[0], accessToken: tokens[1])
-                return ProjectManager(path: getCurrentDirectory(), credentials: credentials, namespace: namespace)
+                return ProjectManager(path: projectPath!, credentials: credentials, namespace: namespace)
             }
         } catch {
             print("Error reading ~/.wskprops")

@@ -41,37 +41,37 @@ enum Runtime {
     case Python
 }
 
-struct Package {
+public struct Package {
     let name: NSString
     let bindTo: String?
     let parameters: Array<[String:AnyObject]>?
 }
 
-struct Trigger {
+public struct Trigger {
     let name: NSString
     let feed: NSString?
     let parameters: Array<[String:AnyObject]>?
 }
 
-struct Rule {
+public struct Rule {
     let name: NSString
     let trigger: NSString
     let action: NSString
 }
 
-struct Sequence {
+public struct Sequence {
     let name: NSString
     let actions: Array<String>
 }
 
-struct Action {
+public struct Action {
     let name: NSString
     let path: NSString
     var runtime: Runtime
     var parameters: Array<[String:AnyObject]>?
 }
 
-struct Dependency {
+public struct Dependency {
     let name: NSString
     let url: NSString
     let version: NSString
@@ -331,7 +331,12 @@ public class ProjectReader {
             let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath)
             
             do {
-                try xcodeProject.readXCodeProjectDirectory()
+                let xcodeActions = try xcodeProject.readXCodeProjectDirectory()
+                
+                for xcodeAction in xcodeActions {
+                    actionsDict[xcodeAction.name] = xcodeAction
+                }
+                
             } catch {
                 print("Error reading xcode project \(error)")
             }

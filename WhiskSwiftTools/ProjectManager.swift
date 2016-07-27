@@ -49,7 +49,10 @@ public class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
-                    try self.projectReader?.readRootDependencies(clone: true)
+                    if self.projectReader?.detectXcode(path: self.path) == false {
+                        try self.projectReader?.readRootDependencies(clone: true)
+                    }
+                    
                     try self.projectReader?.readProjectDirectory()
                     
                     //self.projectReader?.dumpProjectStructure()
@@ -92,7 +95,9 @@ public class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
-                    try self.projectReader?.readRootDependencies(clone: false)
+                    if self.projectReader?.detectXcode(path: self.path) == false {
+                        try self.projectReader?.readRootDependencies(clone: false)
+                    }
                     try self.projectReader?.readProjectDirectory()
                    // self.projectReader?.dumpProjectStructure()
                     

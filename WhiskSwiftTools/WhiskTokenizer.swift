@@ -34,6 +34,8 @@ enum TokenState {
 
 public class WhiskTokenizer {
     
+    let OpenWhiskActionDirectory = "OpenWhiskActions"
+    
     var atPath: String!
     var toPath: String!
     public var actions = [ActionToken]()
@@ -43,11 +45,12 @@ public class WhiskTokenizer {
         toPath = to
     }
     
-    public func readXCodeProjectDirectory() throws {
+    public func readXCodeProjectDirectory() throws -> [Action] {
         let dir: FileManager = FileManager.default
         
+        var whiskActionArray = [Action]()
         if let enumerator: FileManager.DirectoryEnumerator = dir.enumerator(atPath: atPath) {
-            
+
             while let item = enumerator.nextObject() as? NSString {
                 
                 var isDir = ObjCBool(false)
@@ -67,8 +70,20 @@ public class WhiskTokenizer {
                                     actions.append(action)
                                     
                                     do {
-                                        let fileUrl = URL(fileURLWithPath: toPath+"/\(action.actionName).swift")
+                                        
+                                        let actionDirPath = toPath+"/\(OpenWhiskActionDirectory)"
+                                        
+                                        try FileManager.default.createDirectory(atPath: actionDirPath, withIntermediateDirectories: true, attributes: nil)
+                                        
+                                        let actionPath = actionDirPath+"/\(action.actionName).swift"
+                                        
+                                        let fileUrl = URL(fileURLWithPath: actionPath)
                                         try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
+                                        
+                                        let whiskAction = Action(name: action.actionName, path: actionPath, runtime: Runtime.Swift, parameters: nil)
+                                        
+                                        whiskActionArray.append(whiskAction)
+                                        
                                     } catch {
                                         print("Error writing actions from Xcode \(error)")
                                     }
@@ -86,6 +101,8 @@ public class WhiskTokenizer {
             }
             
         }
+        
+        return whiskActionArray
     }
     
     func getActions(str: String) -> [ActionToken]? {

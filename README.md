@@ -45,7 +45,7 @@ There is a dependency on an ObjC project [ZipArchive](https://github.com/ZipArch
 
 ## Using
 
-Run `wsktool` from the command line. `wsktool install` will install the OpenWhisk project from the current directory. You can also specify the directory with `wsktool install <project directory>`.  To activate the Xcode bridge, run `wsktool` in the root directory of an Xcode project where the project (*.xcodeproj) file is located, or add an Xcode project as a depedency in the `root-manifest.json` file.  Loo at an [example of an Xcode dependency](https://github.com/paulcastro/SwiftDummy).
+Run `wsktool` from the command line. `wsktool install` will install the OpenWhisk project from the current directory. You can also specify the directory with `wsktool install <project directory>`.  To activate the Xcode bridge, run `wsktool` in the root directory of an Xcode project where the project (*.xcodeproj) file is located, or add an Xcode project as a depedency in the `root-manifest.json` file.  We have an [example of an Xcode dependency](https://github.com/paulcastro/SwiftDummy).
 
 `wsktool` looks for a property file ~/.wskprops to get your OpenWhisk credentials and namespace.  You get this when you install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli), or you can create it yourself.  It looks like this:
 

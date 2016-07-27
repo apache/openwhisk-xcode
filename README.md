@@ -44,7 +44,10 @@ This code is build using Xcode 8 Beta 3.
 There is a dependency on an ObjC project [ZipArchive](https://github.com/ZipArchive/ZipArchive).  OS X CLI targets and frameworks don't play together very well. The "easiest" way to reference it is to add the code manually to WhiskSwiftTools.  Clone ZipArchive and install per the documentations on the ZipArchive readme. Copy the SSZipArchive folder into the project folder and link to the `libz` library. WhiskSwiftTools includes bridging header file you can reference.
 
 ## Using
-wsktool looks for a property file ~/.wskprops to get your OpenWhisk credentials and namespace.  You get this when you install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli), or you can create it yourself.  It looks like this:
+
+Run `wsktool` from the command line. `wsktool install` will install the OpenWhisk project from the current directory. You can also specify the directory with `wsktool install <project directory>`.  To activate the Xcode bridge, run `wsktool` in the root directory of an Xcode project where the project (*.xcodeproj) file is located, or add an Xcode project as a depedency in the `root-manifest.json` file.  Loo at an [example of an Xcode dependency](https://github.com/paulcastro/SwiftDummy).
+
+`wsktool` looks for a property file ~/.wskprops to get your OpenWhisk credentials and namespace.  You get this when you install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli), or you can create it yourself.  It looks like this:
 
 ```
 APIHOST=openwhisk.ng.bluemix.net

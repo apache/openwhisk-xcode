@@ -61,7 +61,7 @@ You can add wsktool to the build pipeline of Xcode by [adding a "Run Script" pha
 ```
 /path/to/wsktool install $PROJECT_DIR
 ```
-where `path/to/wsktool` is the location you install the wsktool binary. This will run wsktool every time you build your project and automatically upload actions to OpenWhisk.
+where `path/to/wsktool` is the location where you installed the `wsktool` binary. This will run wsktool every time you build your project and automatically upload actions to OpenWhisk.
 
 ### License
 

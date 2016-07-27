@@ -8,15 +8,38 @@ More documentation coming soon!
 ### wsktool  
 A CLI tool that allows developers to install OpenWhisk "projects" into the OpenWhisk backend.  A project contains sets of actions (JS and Swift), triggers, and rules which can be installed with a single command `wsktool install`.  You can do the opposite with `wsktool uninstall`.  You can see an [example of an OpenWhisk project here](https://github.com/openwhisk/openwhisk-package-jira/tree/master/src).
 
-Documentation on the structure of an OpenWhisk project is coming soon.  
+#### wsktool Project Structure
+`wsktool` looks installs code based on the following project structure.  
 
-`wsktool` supports referencing dependencies on OpenWhisk projects in Github.  It will automatically download, bind, and install these with the main project.
+```
+_ Ignored files
+- src
+   |_ root-manifest.json
+   |_ source_code.js                  // JS action in default package and namespace
+   |_ action_source_code.swift        // Swift action in default package and namespace
+   |_ mypackage1                      // package
+          |_mypackage1-manifest.json  // Package specific settings
+          |_source_code.js
+   |_ mypackage2
+          |_source_code.swift
+          
+```
 
+`wsktool` looks for a `src` directory in the project home. It will walk this directory and install/delete OpenWhisk actions, triggers, and rules using the following conventions:
+
+* Actions will be installed for each source code file under src using the filename as the action name.  The file extension indicate the desired runtime.
+* Source code directly underneath src are installed without specifying a namespace or package
+* Directories underneath src indicate packages.  The package name is the directory name
+* Source code inside package directories are installed as members of the package
+* The `root-manifest.json` contains definitions for triggers, rules, sequences, action parameters, and special runtime settings, e.g. Swift3 instead of Swift 2.
+* You can also declare dependencies on other OpenWhisk packages installed in GitHub in the `root-manifest.json`. `wsktool` will automatically download, bind, and install these with the main project. 
+* The `<package-name>-manifest.json` contains package specific settings for actions.  Settings here will override settings in `root-manifest.json`.
+  
 ### WhiskKit
-A Swift 3 set of protocols and classes that lets you implement actions in Xcode.  Provides an Xcode to OpenWhisk bridge via wsktool that allows you to directly install WhiskKit actions into OpenWhisk.
+A Swift 3 set of protocols and classes that lets you implement actions in Xcode.  WhiskKit provides an Xcode to OpenWhisk bridge via `wsktool` that allows you to directly install WhiskKit actions into OpenWhisk.  To access the bridge, add dependency to the `root-manifest.json` where the `src` directory contains an Xcode project.  `wsktool` will search the project for Swift 3 actions.
 
 ## Building
-This code is build using Xcode 8 Beta 2 and is compatible with Swift 3 Tech Preview 2.  
+This code is build using Xcode 8 Beta 3.  
 
 There is a dependency on an ObjC project [ZipArchive](https://github.com/ZipArchive/ZipArchive).  OS X CLI targets and frameworks don't play together very well. The "easiest" way to reference it is to add the code manually to WhiskSwiftTools.  Clone ZipArchive and install per the documentations on the ZipArchive readme. Copy the SSZipArchive folder into the project folder and link to the `libz` library. WhiskSwiftTools includes bridging header file you can reference.
 

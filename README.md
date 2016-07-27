@@ -55,6 +55,14 @@ NAMESPACE=<whatever namespace you are using>
 AUTH=<auth token from openwhisk>
 ```
 
+#### XCode Integration
+You can add wsktool to the build pipeline by adding a "Run Script" phase to your project's build phases.  Create a Run Script, then add the following line:
+
+```
+/path/to/wsktool install $PROJECT_DIR
+```
+where `path/to/wsktool` is the location you install the wsktool binary. This will run wsktool every time you build your project and automatically upload actions to OpenWhisk.
+
 ### License
 
 Copyright 2015-2016 IBM Corporation

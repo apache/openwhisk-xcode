@@ -39,7 +39,7 @@ _ Ignored files
 A Swift 3 set of protocols and classes that lets you implement actions in Xcode.  WhiskKit provides an Xcode to OpenWhisk bridge via `wsktool` that allows you to directly install WhiskKit actions into OpenWhisk.  To access the bridge, add dependency to the `root-manifest.json` where the `src` directory contains an Xcode project.  `wsktool` will search the project for Swift 3 actions.
 
 ## Building
-This code is build using Xcode 8 Beta 3.  
+This code is build using Xcode 8 Beta 6.  
 
 There is a dependency on an ObjC project [ZipArchive](https://github.com/ZipArchive/ZipArchive).  OS X CLI targets and frameworks don't play together very well. The "easiest" way to reference it is to add the code manually to WhiskSwiftTools.  Clone ZipArchive and install per the documentations on the ZipArchive readme. Copy the SSZipArchive folder into the project folder and link to the `libz` library. WhiskSwiftTools includes bridging header file you can reference.
 

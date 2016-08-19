@@ -16,19 +16,19 @@
 
 import Foundation
 
-public enum WhiskNetworkError: ErrorProtocol {
-    case MalformedUrlString(url: String, cause: String)
-    case QualifiedNameFormat(description: String)
+public enum WhiskNetworkError: Error {
+    case malformedUrlString(url: String, cause: String)
+    case qualifiedNameFormat(description: String)
 }
 
 
 /* Type of Whisk operation requested */
 enum WhiskCallType {
-    case Action
-    case Trigger
-    case Package
-    case Rule
-    case Sequence
+    case action
+    case trigger
+    case package
+    case rule
+    case sequence
 }
 
 public struct WhiskCredentials {
@@ -45,8 +45,8 @@ public struct WhiskCredentials {
         // set authorization string
         let loginString = (accessKey+":"+accessToken) as NSString
         
-        let loginData: NSData = loginString.data(using: String.Encoding.utf8.rawValue)!
-        let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!
+        let base64LoginString = loginData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
         
         return base64LoginString
     }
@@ -124,7 +124,7 @@ class WhiskAPI {
                 package = pathParts[1]
                 name = pathParts[2]
             } else {
-                throw WhiskNetworkError.QualifiedNameFormat(description: "Cannot parse \(qName)")
+                throw WhiskNetworkError.qualifiedNameFormat(description: "Cannot parse \(qName)")
             }
         } else {
             if pathParts.count == 1 {
@@ -133,7 +133,7 @@ class WhiskAPI {
                 package = pathParts[0]
                 name = pathParts[1]
             } else {
-                throw WhiskNetworkError.QualifiedNameFormat(description: "Cannot parse \(qName)")
+                throw WhiskNetworkError.qualifiedNameFormat(description: "Cannot parse \(qName)")
             }
         }
         
@@ -175,7 +175,7 @@ class WhiskAPI {
         case AlarmTriggerFeed:
             try createAlarmsFeed(name: name, namespace: namespace, trigger: trigger, group: group)
         default:
-            throw WhiskProjectError.UnsupportedFeedType(cause: "Feed trigger \(trigger.feed) not supported")
+            throw WhiskProjectError.unsupportedFeedType(cause: "Feed trigger \(trigger.feed) not supported")
         }
     }
     
@@ -183,11 +183,11 @@ class WhiskAPI {
         let urlStr: String = whiskBaseURL != nil ? whiskBaseURL! : DefaultBaseURL
         let path = "namespaces/\(namespace)/triggers/\(name)"
         
-        let annotations: [String:AnyObject] = ["value": trigger.feed!, "key": "feed"]
+        let annotations: [String:AnyObject] = ["value": trigger.feed!, "key": "feed" as AnyObject]
         let parameters: [String: [[String:AnyObject]]] = ["annotations": [annotations]]
         
         group.enter()
-        try networkManager.putCall(url: urlStr, path: path, parameters: parameters, group: group) { response, error in
+        try networkManager.putCall(url: urlStr, path: path, parameters: parameters as [String : AnyObject]?, group: group) { response, error in
             
             if let error = error {
                 print("Error creating trigger \(name) for feed \(trigger.feed), error: \(error)")
@@ -213,9 +213,9 @@ class WhiskAPI {
                             }
                         }
                         
-                        params?["authKey"] = self.networkManager.whiskCredentials.accessKey+":"+self.networkManager.whiskCredentials.accessToken
-                        params?["lifecycleEvent"] = "CREATE"
-                        params?["triggerName"] = "/"+namespace+"/"+name
+                        params?["authKey"] = "\(self.networkManager.whiskCredentials.accessKey):\(self.networkManager.whiskCredentials.accessToken)" as AnyObject
+                        params?["lifecycleEvent"] = "CREATE" as AnyObject
+                        params?["triggerName"] = ("/"+namespace+"/"+name) as AnyObject
                     }
                     
                     
@@ -252,7 +252,7 @@ class WhiskAPI {
         }
         
         let exec = ["kind":kind, "code": code] as [String:String]
-        let limits = ["timeout": 30000, "memory":256] as [String:AnyObject]
+        let limits = ["timeout": 30000 as AnyObject, "memory":256 as AnyObject] as [String:AnyObject]
         
         var whiskParameters: [String:AnyObject] = ["exec":exec as AnyObject, "limits":limits as AnyObject]
         
@@ -317,7 +317,7 @@ class WhiskAPI {
         let whiskParameters = ["trigger": triggerName, "action": actionName]
         
         group.enter()
-        try networkManager.putCall(url: urlStr, path: path, parameters: whiskParameters, group: group)
+        try networkManager.putCall(url: urlStr, path: path, parameters: whiskParameters as [String : AnyObject]?, group: group)
         
     }
     
@@ -330,7 +330,7 @@ class WhiskAPI {
         
         group.enter()
         
-        try networkManager.postCall(url: urlStr, path: path, parameters: ["status":"active"], group: group) {
+        try networkManager.postCall(url: urlStr, path: path, parameters: ["status":"active" as AnyObject], group: group) {
             response, error in
             if let error = error {
                 print("Error enabling rule \(name), error \(error)")
@@ -352,13 +352,13 @@ class WhiskAPI {
         }
         
         let exec = ["kind":"nodejs", "code": SequenceCode.getSequenceCode()] as [String:String]
-        let limits = ["timeout": 30000, "memory":256] as [String:AnyObject]
+        let limits = ["timeout": 30000 as AnyObject, "memory":256 as AnyObject] as [String:AnyObject]
         
         var whiskParameters: [String:AnyObject] = ["exec":exec as AnyObject, "limits":limits as AnyObject]
         
         var paramArray = Array<[String:AnyObject]>()
-        let actionList = ["key": "_actions", "value": actions as AnyObject]
-        paramArray.append(actionList)
+        let actionList = ["key": "_actions", "value": actions as AnyObject] as [String : Any]
+        paramArray.append(actionList as [String : AnyObject])
         whiskParameters["parameters"] = paramArray as AnyObject
         
         
@@ -446,9 +446,9 @@ class WhiskAPI {
     func deleteAlarmsFeed(namespace: String, name: String, group: DispatchGroup) throws {
         var params = [String:AnyObject]()
         
-        params["authKey"] = self.networkManager.whiskCredentials.accessKey+":"+self.networkManager.whiskCredentials.accessToken
-        params["lifecycleEvent"] = "DELETE"
-        params["triggerName"] = namespace+"/"+name
+        params["authKey"] = (self.networkManager.whiskCredentials.accessKey+":"+self.networkManager.whiskCredentials.accessToken) as AnyObject
+        params["lifecycleEvent"] = "DELETE" as AnyObject
+        params["triggerName"] = (namespace+"/"+name) as AnyObject
         
         let urlStr: String = whiskBaseURL != nil ? whiskBaseURL! : DefaultBaseURL
         let path = "namespaces/whisk.system/actions/alarms/alarm"
@@ -472,7 +472,7 @@ class WhiskAPI {
         let path = "namespaces/\(namespace)/rules/\(name)"
         
         group.enter()
-        try networkManager.postCall(url: urlStr, path: path, parameters: ["status":"inactive"], group: group) { response, error in
+        try networkManager.postCall(url: urlStr, path: path, parameters: ["status":"inactive" as AnyObject], group: group) { response, error in
             
             if let error = error {
                 print("Error disabling rule \(name), error: \(error)")
@@ -509,18 +509,18 @@ class WhiskNetworkManager {
         self.urlSession = session
     }
     
-    func putCall(url: String, path: String, parameters: [String:AnyObject]? = nil, group: DispatchGroup, callback: ((response: [String:Any]?, error: ErrorProtocol?) -> Void)? = nil) throws  {
+    func putCall(url: String, path: String, parameters: [String:AnyObject]? = nil, group: DispatchGroup, callback: (([String:Any]?, Error?) -> Void)? = nil) throws  {
         
         let overwritePath = path+"?overwrite=true"
         
         // encode path
         guard let encodedPath = overwritePath.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else {
-            throw WhiskNetworkError.MalformedUrlString(url: url, cause: "Cannot encode url path \(path)")
+            throw WhiskNetworkError.malformedUrlString(url: url, cause: "Cannot encode url path \(path)")
         }
         
         // create request
         guard let nsUrl = URL(string:url+encodedPath) else {
-            throw WhiskNetworkError.MalformedUrlString(url: url, cause: "Cannot create URL from url String")
+            throw WhiskNetworkError.malformedUrlString(url: url, cause: "Cannot create URL from url String")
         }
         
         var request = URLRequest(url: nsUrl)
@@ -545,14 +545,14 @@ class WhiskNetworkManager {
             
             if let error = error {
                 if let callback = callback {
-                    callback(response: nil, error: error)
+                    callback(nil, error)
                 } else {
                     return
                 }
                 
             } else {
                 if let callback = callback {
-                    callback(response: ["status":statusCode, "msg":"PUT call success"], error: nil)
+                    callback(["status":statusCode, "msg":"PUT call success"], nil)
                 }
             }
             
@@ -564,16 +564,16 @@ class WhiskNetworkManager {
         
     }
     
-    func deleteCall(url: String, path: String,group: DispatchGroup, callback: ((response: [String:AnyObject]?, error: ErrorProtocol?) -> Void)? = nil) throws {
+    func deleteCall(url: String, path: String,group: DispatchGroup, callback: (([String:AnyObject]?, Error?) -> Void)? = nil) throws {
         
         // encode path
         guard let encodedPath = path.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else {
-            throw WhiskNetworkError.MalformedUrlString(url: url, cause: "Cannot encode url path \(path)")
+            throw WhiskNetworkError.malformedUrlString(url: url, cause: "Cannot encode url path \(path)")
         }
         
         // create request
         guard let nsUrl = URL(string:url+encodedPath) else {
-            throw WhiskNetworkError.MalformedUrlString(url: url, cause: "Cannot create URL from url String")
+            throw WhiskNetworkError.malformedUrlString(url: url, cause: "Cannot create URL from url String")
         }
         
         var request = URLRequest(url: nsUrl)
@@ -604,13 +604,13 @@ class WhiskNetworkManager {
                 if let data = data {
                     do {
                         if let resp = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? [String:AnyObject] {
-                            callback(response: resp, error: nil)
+                            callback(resp, nil)
                         }
                     } catch {
                         print("Error in DELETE \(error)")
                     }
                 } else {
-                    callback(response: ["status":statusCode], error: nil)
+                    callback(["status":statusCode as AnyObject], nil)
                 }
                 
             }
@@ -623,16 +623,16 @@ class WhiskNetworkManager {
         
     }
     
-    func postCall(url: String, path: String, parameters: [String:AnyObject]?, group: DispatchGroup?, callback: (response: [String:Any]?, error: ErrorProtocol?) -> Void) throws {
+    func postCall(url: String, path: String, parameters: [String:AnyObject]?, group: DispatchGroup?, callback: @escaping ([String:Any]?, Error?) -> Void) throws {
         
         // encode path
         guard let encodedPath = path.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else {
-            throw WhiskNetworkError.MalformedUrlString(url: url, cause: "Cannot encode url path \(path)")
+            throw WhiskNetworkError.malformedUrlString(url: url, cause: "Cannot encode url path \(path)")
         }
         
         // create request
         guard let nsUrl = URL(string:url+encodedPath) else {
-            throw WhiskNetworkError.MalformedUrlString(url: url, cause: "Cannot create URL from url String")
+            throw WhiskNetworkError.malformedUrlString(url: url, cause: "Cannot create URL from url String")
         }
         
         var request = URLRequest(url: nsUrl)
@@ -656,12 +656,12 @@ class WhiskNetworkManager {
             
             if let error = error {
                 print("Error performing network call \(error), status: \(statusCode)")
-                callback(response: nil, error: error)
+                callback(nil, error)
                 return
                 
             } else {
                 
-                callback(response: ["status":statusCode, "description":"Post call success"], error: nil)
+                callback(["status":statusCode, "description":"Post call success"], nil)
             }
             
             if let group = group {

@@ -40,7 +40,8 @@ enum OptionType: String {
 
 class ConsoleIO {
     class func printUsage() {
-        let executableName = (Process.arguments[0] as NSString).lastPathComponent
+        
+        let executableName = (CommandLine.arguments[0] as NSString).lastPathComponent
         
         print ("usage:")
         print ("To install a project:")
@@ -57,7 +58,7 @@ class ConsoleIO {
         print ("Type \(executableName) -h or --help to show usage information")
     }
     
-    func getOption(option: String) -> (option: OptionType, value: String) {
+    func getOption(_ option: String) -> (option: OptionType, value: String) {
         return (OptionType(value: option), option)
     }
 }

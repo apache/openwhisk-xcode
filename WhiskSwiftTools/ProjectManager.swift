@@ -16,7 +16,7 @@
 
 import Foundation
 
-public class ProjectManager {
+open class ProjectManager {
     
     let whisk: WhiskAPI!
     let path: String!
@@ -38,7 +38,7 @@ public class ProjectManager {
         
     }
     
-    public func deployProject() throws {
+    open func deployProject() throws {
         if (projectReader) != nil {
             
             let group = DispatchGroup()
@@ -49,8 +49,8 @@ public class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
-                    if self.projectReader?.detectXcode(path: self.path) == false {
-                        try self.projectReader?.readRootDependencies(clone: true)
+                    if self.projectReader?.detectXcode(self.path) == false {
+                        try self.projectReader?.readRootDependencies(true)
                     }
                     
                     try self.projectReader?.readProjectDirectory()
@@ -72,9 +72,9 @@ public class ProjectManager {
             }
             
             switch group.wait(timeout: DispatchTime.distantFuture) {
-            case DispatchTimeoutResult.Success:
+            case DispatchTimeoutResult.success:
                 break
-            case DispatchTimeoutResult.TimedOut:
+            case DispatchTimeoutResult.timedOut:
                 break
                 
             }
@@ -84,7 +84,7 @@ public class ProjectManager {
         }
     }
     
-    public func deleteProject() throws {
+    open func deleteProject() throws {
         
         if projectReader != nil {
             let group = DispatchGroup()
@@ -95,8 +95,8 @@ public class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
-                    if self.projectReader?.detectXcode(path: self.path) == false {
-                        try self.projectReader?.readRootDependencies(clone: false)
+                    if self.projectReader?.detectXcode(self.path) == false {
+                        try self.projectReader?.readRootDependencies(false)
                     }
                     try self.projectReader?.readProjectDirectory()
                    // self.projectReader?.dumpProjectStructure()
@@ -116,9 +116,9 @@ public class ProjectManager {
             }
             
             switch group.wait(timeout: DispatchTime.distantFuture) {
-            case DispatchTimeoutResult.Success:
+            case DispatchTimeoutResult.success:
                 break
-            case DispatchTimeoutResult.TimedOut:
+            case DispatchTimeoutResult.timedOut:
                 break
                 
             }
@@ -128,7 +128,7 @@ public class ProjectManager {
     }
     
     
-    public func installSequences() throws {
+    open func installSequences() throws {
         let sequences = projectReader.sequenceDict
         
         let group = DispatchGroup()
@@ -138,17 +138,17 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Sequences installed successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("Install sequence timed out")
             break
         }
         
         
     }
-    public func installPackages() throws {
+    open func installPackages() throws {
         let packages = projectReader.packageDict
         
         let group = DispatchGroup()
@@ -158,10 +158,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Packages installed successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("Install pacakges timed out")
             break
         }
@@ -170,7 +170,7 @@ public class ProjectManager {
         
     }
     
-    public func deletePackages() throws {
+    open func deletePackages() throws {
         let packages = projectReader.packageDict
         
         let group = DispatchGroup()
@@ -180,10 +180,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Packages deleted successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("delete packages timed out")
             break
         }
@@ -191,7 +191,7 @@ public class ProjectManager {
         
     }
     
-    public func installRules() throws {
+    open func installRules() throws {
         let rules = projectReader.ruleDict
         
         let group = DispatchGroup()
@@ -201,10 +201,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Rules installed successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("Install rules timed out")
             break
         }
@@ -213,7 +213,7 @@ public class ProjectManager {
         
     }
     
-    public func enableRules() throws {
+    open func enableRules() throws {
         let rules = projectReader.ruleDict
         
         let group = DispatchGroup()
@@ -223,10 +223,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Rules enabled successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("enable timed out")
             break
         }
@@ -237,7 +237,7 @@ public class ProjectManager {
     
     
     
-    public func deleteRules() throws {
+    open func deleteRules() throws {
         let rules = projectReader.ruleDict
         
         let group = DispatchGroup()
@@ -247,10 +247,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Rules deleted successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("delete rules timed out")
             break
         }
@@ -259,7 +259,7 @@ public class ProjectManager {
         
     }
     
-    public func installTriggers() throws {
+    open func installTriggers() throws {
         let triggers = projectReader.triggerDict
         
         let group = DispatchGroup()
@@ -273,10 +273,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Triggers installed successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("install timed out")
             break
         }
@@ -284,7 +284,7 @@ public class ProjectManager {
         
     }
     
-    public func deleteTriggers() throws {
+    open func deleteTriggers() throws {
         let triggers = projectReader.triggerDict
         
         let group = DispatchGroup()
@@ -294,10 +294,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Triggers deleted successfully success")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("delete triggers timed out")
             break
         }
@@ -306,7 +306,7 @@ public class ProjectManager {
         
     }
     
-    public func installActions() throws {
+    open func installActions() throws {
         let actions = projectReader.actionsDict
         
         let group = DispatchGroup()
@@ -322,13 +322,13 @@ public class ProjectManager {
             
             var runtimeStr = "nodejs"
             switch runtime {
-            case Runtime.Swift:
+            case Runtime.swift:
                 runtimeStr = "swift"
-            case Runtime.Swift3:
+            case Runtime.swift3:
                 runtimeStr = "swift:3"
-            case Runtime.Python:
+            case Runtime.python:
                 runtimeStr = "python"
-            case Runtime.Java:
+            case Runtime.java:
                 runtimeStr = "java"
             default:
                 break
@@ -339,10 +339,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Actions installed sucessfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("Install actions timed out")
             break
         }
@@ -351,7 +351,7 @@ public class ProjectManager {
         
     }
     
-    public func deleteActionsAndSequences() throws {
+    open func deleteActionsAndSequences() throws {
         let actions = projectReader.actionsDict
         let group = DispatchGroup()
         for (name, _) in actions {
@@ -364,10 +364,10 @@ public class ProjectManager {
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {
-        case DispatchTimeoutResult.Success:
+        case DispatchTimeoutResult.success:
             print("Actions and sequences deleted successfully")
             break
-        case DispatchTimeoutResult.TimedOut:
+        case DispatchTimeoutResult.timedOut:
             print("delete actions and sequences timed out")
             break
         }

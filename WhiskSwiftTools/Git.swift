@@ -21,9 +21,9 @@ class Git {
     
     static let TempZipFile = "/tmp/openwhiskproject.zip"
     
-    class func cloneGitRepo(repo: String, toPath: String, group: DispatchGroup) throws {
-        guard let nsUrl = NSURL(string:repo) else {
-            throw WhiskNetworkError.MalformedUrlString(url: repo, cause: "Cannot create URL from url String")
+    class func cloneGitRepo(_ repo: String, toPath: String, group: DispatchGroup) throws {
+        guard let nsUrl = URL(string:repo) else {
+            throw WhiskNetworkError.malformedUrlString(url: repo, cause: "Cannot create URL from url String")
         }
         
         let sessionConfig = URLSessionConfiguration.default
@@ -65,7 +65,7 @@ class Git {
             }
             
             group.leave()
-        })
+        } as! (Data?, URLResponse?, Error?) -> Void)
         task.resume()
     }
 }

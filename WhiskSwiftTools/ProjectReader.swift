@@ -25,20 +25,20 @@ import Foundation
  */
 
 
-public enum WhiskProjectError: ErrorProtocol {
-    case DuplicateNameError(name: String)
-    case MalformedManifestFile(name: String, cause: String)
-    case RuleStateError(type: String, cause: String)
-    case GitRequestError(cause: String)
-    case UnsupportedFeedType(cause: String)
+public enum WhiskProjectError: Error {
+    case duplicateNameError(name: String)
+    case malformedManifestFile(name: String, cause: String)
+    case ruleStateError(type: String, cause: String)
+    case gitRequestError(cause: String)
+    case unsupportedFeedType(cause: String)
 }
 
 enum Runtime {
-    case Swift
-    case Swift3
-    case NodeJS
-    case Java
-    case Python
+    case swift
+    case swift3
+    case nodeJS
+    case java
+    case python
 }
 
 public struct Package {
@@ -78,7 +78,7 @@ public struct Dependency {
 }
 
 
-public class ProjectReader {
+open class ProjectReader {
     
     let BindingsFileName = "root-manifest.json"
     let ManifestFileName = "manifest.json"
@@ -107,29 +107,29 @@ public class ProjectReader {
                     let group = DispatchGroup()
                     
                     let zipFilePath = "\(repo)/archive/\(release).zip"
-                    try Git.cloneGitRepo(repo: zipFilePath, toPath: path, group: group)
+                    try Git.cloneGitRepo(zipFilePath, toPath: path, group: group)
                     
                     switch group.wait(timeout: DispatchTime.distantFuture) {
-                    case DispatchTimeoutResult.Success:
+                    case DispatchTimeoutResult.success:
                         let projectName = (repo as NSString).lastPathComponent
                         projectPath = "\(path)/\(projectName)-\(release)/src"
                         break
-                    case DispatchTimeoutResult.TimedOut:
-                        throw WhiskProjectError.GitRequestError(cause: "Failure cloning repo \(repo): request timed out.")
+                    case DispatchTimeoutResult.timedOut:
+                        throw WhiskProjectError.gitRequestError(cause: "Failure cloning repo \(repo): request timed out.")
                     }
                     
                 } catch {
                     print("Error cloning repo \(error)")
                 }
             } else {
-                throw WhiskProjectError.GitRequestError(cause: "Cannot clone, release version must be specified ")
+                throw WhiskProjectError.gitRequestError(cause: "Cannot clone, release version must be specified ")
             }
         } else {
             projectPath = path
         }
     }
     
-    public func dumpProjectStructure() {
+    open func dumpProjectStructure() {
         print("Packages:")
         print("=========")
         for (name, package) in packageDict {
@@ -181,71 +181,72 @@ public class ProjectReader {
         
     }
     
-    public func readRootDependencies(clone: Bool) throws {
+    open func readRootDependencies(_ clone: Bool) throws {
         
         let path = projectPath+"/"+BindingsFileName
-        let json = try ManifestReader.parseJson(atPath: path)
+        let json = try ManifestReader.parseJson(path as NSString)
         
         
         if let dependencies = json["dependencies"] {
             for dependency in dependencies as! Array<[String:AnyObject]> {
                 guard let url = dependency["url"] as? NSString else {
                     clearAll()
-                    throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of dependency missing url")
+                    throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Declaration of dependency missing url")
                 }
                 
-                var repo = url
+                var repo = url as String
                 
                 if url.pathExtension == "git" {
+                    
                     repo = String((repo as String).characters.dropLast(4))
                 }
                 
-                let name = repo.lastPathComponent
+                let name = (repo as NSString).lastPathComponent as NSString
                 
                 var ver = "master"
                 if let version = dependency["version"] as? NSString {
                     ver = version as String
                 }
                 
-                let dep = Dependency(name: name as NSString, url: repo, version: ver)
+                let dep = Dependency(name: name as NSString, url: repo as NSString, version: ver as NSString)
                 dependenciesDict[name] = dep
             }
         }
         
-        try readDependencies(clone: clone)
+        try readDependencies(clone)
     }
     
-    public func readProjectDirectory() throws {
+    open func readProjectDirectory() throws {
         // read project directory
-        try readDirectory(dirPath: projectPath, isDependency: false)
+        try readDirectory(projectPath, isDependency: false)
         
         // read independent directories
     }
     
-    public func readDependencies(clone: Bool) throws {
+    open func readDependencies(_ clone: Bool) throws {
         for (name, dependency) in dependenciesDict {
             
             let group = DispatchGroup()
             
             let zipFilePath = "\(dependency.url)/archive/\(dependency.version).zip"
             if clone == true {
-                try Git.cloneGitRepo(repo: zipFilePath, toPath: projectPath+"/Packages/", group: group)
+                try Git.cloneGitRepo(zipFilePath, toPath: projectPath+"/Packages/", group: group)
             }
             
             switch group.wait(timeout: DispatchTime.distantFuture) {
-            case DispatchTimeoutResult.Success:
+            case DispatchTimeoutResult.success:
                 let packagePath = (name as String)+"-"+(dependency.version as String)
                 let depPath = projectPath+"/Packages/"+packagePath+"/src"
-                try readDirectory(dirPath: depPath, isDependency: true)
+                try readDirectory(depPath, isDependency: true)
                 break
-            case DispatchTimeoutResult.TimedOut:
+            case DispatchTimeoutResult.timedOut:
                 break
             }
             
         }
     }
     
-    public func detectXcode(path: String) -> Bool {
+    open func detectXcode(_ path: String) -> Bool {
         let fileManager = FileManager.default
         if let enumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(atPath: path) {
             while let item = enumerator.nextObject() as? NSString {
@@ -259,9 +260,9 @@ public class ProjectReader {
         return false
     }
     
-    public func readDirectory(dirPath: String, isDependency: Bool) throws {
+    open func readDirectory(_ dirPath: String, isDependency: Bool) throws {
         
-        let isXcode = detectXcode(path: dirPath)
+        let isXcode = detectXcode(dirPath)
         
         if isXcode == false {
             let dir: FileManager = FileManager.default
@@ -292,9 +293,9 @@ public class ProjectReader {
                                 }
                                 
                             }  else if item.hasSuffix(".swift") {
-                                try addAction(fullPath: fullPath as NSString, item: item, runtime: .Swift)
+                                try addAction(fullPath as NSString, item: item, runtime: .swift)
                             }  else if item.hasSuffix(".js") {
-                                try addAction(fullPath: fullPath as NSString, item: item, runtime: .NodeJS)
+                                try addAction(fullPath as NSString, item: item, runtime: .nodeJS)
                             } else if item.hasSuffix(".json") {
                                 
                                 // in subdirectories we only look for manifest files
@@ -324,8 +325,8 @@ public class ProjectReader {
                     
                 }
                 
-                try self.processManifestFiles(manifest: self.bindingsDict)
-                try self.processManifestFiles(manifest: self.manifestDict)
+                try self.processManifestFiles(self.bindingsDict)
+                try self.processManifestFiles(self.manifestDict)
             }
         } else {
             let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath)
@@ -343,7 +344,7 @@ public class ProjectReader {
         }
     }
     
-    func addAction(fullPath: NSString, item: NSString, runtime: Runtime) throws {
+    func addAction(_ fullPath: NSString, item: NSString, runtime: Runtime) throws {
         
         let name = (item.lastPathComponent as NSString).deletingPathExtension
         
@@ -353,24 +354,24 @@ public class ProjectReader {
                 let package = item.pathComponents[0]
                 
                 let fullName = "\(package)/\(name)" as NSString
-                if !nameExists(name: fullName) {
+                if !nameExists(fullName) {
                     actionsDict[fullName] = Action(name: fullName, path: fullPath, runtime: runtime, parameters: nil)
                 } else {
                     clearAll()
-                    throw WhiskProjectError.DuplicateNameError(name:fullName as String)
+                    throw WhiskProjectError.duplicateNameError(name:fullName as String)
                 }
             }
         } else {
-            if !nameExists(name: name as NSString) {
+            if !nameExists(name as NSString) {
                 actionsDict[name as NSString] = Action(name: name as NSString, path: fullPath, runtime: runtime, parameters: nil)
             } else {
                 clearAll()
-                throw WhiskProjectError.DuplicateNameError(name: name)
+                throw WhiskProjectError.duplicateNameError(name: name)
             }
         }
     }
     
-    func nameExists(name: NSString) -> Bool {
+    func nameExists(_ name: NSString) -> Bool {
         if actionsDict[name] != nil || packageDict[name] != nil || triggerDict[name] != nil || ruleDict[name] != nil || sequenceDict[name] != nil {
             return true
         }
@@ -378,11 +379,11 @@ public class ProjectReader {
         return false
     }
     
-    func processManifestFiles(manifest: [NSString: NSString]) throws {
+    func processManifestFiles(_ manifest: [NSString: NSString]) throws {
         
         for (name, path) in manifest {
             
-            let json = try ManifestReader.parseJson(atPath: path)
+            let json = try ManifestReader.parseJson(path)
             
             var prefix = ""
             if name.pathComponents.count > 1 {
@@ -398,7 +399,7 @@ public class ProjectReader {
                         
                         guard let itemName = package["name"] as? String, let bindTo = (package["bindTo"]) as? String else {
                             clearAll()
-                            throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of package binding missing name or bindTo")
+                            throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Declaration of package binding missing name or bindTo")
                         }
                         
                         let parameters = package["parameters"] as? Array<[String:AnyObject]>
@@ -414,7 +415,7 @@ public class ProjectReader {
                         
                         guard let itemName = trigger["name"] as? String else {
                             clearAll()
-                            throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of trigger missing name")
+                            throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Declaration of trigger missing name")
                         }
                         
                         let parameters = trigger["parameters"] as? Array<[String:AnyObject]>
@@ -433,7 +434,7 @@ public class ProjectReader {
                         
                         guard let itemName = rule["name"] as? String, let triggerName = rule["trigger"] as? String, let actionName = rule["action"] as? String else {
                             clearAll()
-                            throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of rule missing name, trigger, or action")
+                            throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Declaration of rule missing name, trigger, or action")
                         }
                         
                         let item = Rule(name: itemName as NSString, trigger: triggerName as NSString, action: actionName as NSString)
@@ -451,7 +452,7 @@ public class ProjectReader {
                     
                     guard let itemName = sequence["name"] as? String, let actions = sequence["actions"] as? Array<String> else {
                         clearAll()
-                        throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of sequence missing name or action list")
+                        throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Declaration of sequence missing name or action list")
                     }
                     
                     let item = Sequence(name: prefix+itemName as NSString, actions: actions)
@@ -473,14 +474,14 @@ public class ProjectReader {
                     
                     guard let itemName = action["action"] as? String else {
                         clearAll()
-                        throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Declaration of action parameters in manfiest file is missing \'action\' attribute")
+                        throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Declaration of action parameters in manfiest file is missing \'action\' attribute")
                     }
                     
                     if let item = actionsDict[(prefix+itemName) as NSString] {
                         var runtime = item.runtime
                         if let kind = action["kind"] as? String {
-                            if runtime == Runtime.Swift && kind == "swift:3" {
-                                runtime = Runtime.Swift3
+                            if runtime == Runtime.swift && kind == "swift:3" {
+                                runtime = Runtime.swift3
                             }
                         }
                         
@@ -489,7 +490,7 @@ public class ProjectReader {
                         
                     } else {
                         clearAll()
-                        throw WhiskProjectError.MalformedManifestFile(name: path as String, cause: "Setting parameters for an action \(itemName) that does not exist")
+                        throw WhiskProjectError.malformedManifestFile(name: path as String, cause: "Setting parameters for an action \(itemName) that does not exist")
                     }
                     
                 }

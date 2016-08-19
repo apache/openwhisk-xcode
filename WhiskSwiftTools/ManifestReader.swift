@@ -18,13 +18,13 @@ import Foundation
 
 class ManifestReader {
     
-    class func readManifest(atPath: NSString) throws -> [String: AnyObject] {
+    class func readManifest(_ atPath: NSString) throws -> [String: AnyObject] {
          
-        return try ManifestReader.parseJson(atPath: atPath)
+        return try ManifestReader.parseJson(atPath)
         
     }
     
-    class func parseJson(atPath: NSString) throws -> [String:AnyObject]  {
+    class func parseJson(_ atPath: NSString) throws -> [String:AnyObject]  {
         do {
             
             let jsonStr = try NSString(contentsOfFile: atPath as String, encoding: String.Encoding.utf8.rawValue)
@@ -34,14 +34,14 @@ class ManifestReader {
                     if let openwhisk = result["openwhisk"] as? [String:AnyObject] {
                         return openwhisk
                     } else {
-                        throw WhiskProjectError.MalformedManifestFile(name: atPath as String, cause: "root of manifest file should be a JSON object called 'openwhisk'")
+                        throw WhiskProjectError.malformedManifestFile(name: atPath as String, cause: "root of manifest file should be a JSON object called 'openwhisk'")
                     }
                 } else {
-                    throw WhiskProjectError.MalformedManifestFile(name: atPath as String, cause: "JSON file does not appear to be an object.  Is in an array?")
+                    throw WhiskProjectError.malformedManifestFile(name: atPath as String, cause: "JSON file does not appear to be an object.  Is in an array?")
                 }
             }
         } catch {
-            throw WhiskProjectError.MalformedManifestFile(name: atPath as String, cause: "Error parsing JSON file contents \(error)")
+            throw WhiskProjectError.malformedManifestFile(name: atPath as String, cause: "Error parsing JSON file contents \(error)")
         }
         
         return [String:AnyObject]()

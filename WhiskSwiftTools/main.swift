@@ -18,7 +18,7 @@ import Foundation
 
 let installer = WhiskInstaller()
 
-if Process.argc < 2 {
+if CommandLine.argc < 2 {
     ConsoleIO.printUsage()
 } else {
     installer.staticMode()

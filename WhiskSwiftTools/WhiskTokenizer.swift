@@ -22,9 +22,9 @@ public struct ActionToken {
 }
 
 enum TokenState {
-    case InStarComment
-    case InSlashComment
-    case Initial
+    case inStarComment
+    case inSlashComment
+    case initial
     case inClass
     case inClassName
     case inClassQualifier
@@ -32,20 +32,20 @@ enum TokenState {
     case parseAction
 }
 
-public class WhiskTokenizer {
+open class WhiskTokenizer {
     
     let OpenWhiskActionDirectory = "OpenWhiskActions"
     
     var atPath: String!
     var toPath: String!
-    public var actions = [ActionToken]()
+    open var actions = [ActionToken]()
     
     public init(from: String, to: String) {
         atPath = from
         toPath = to
     }
     
-    public func readXCodeProjectDirectory() throws -> [Action] {
+    open func readXCodeProjectDirectory() throws -> [Action] {
         let dir: FileManager = FileManager.default
         
         var whiskActionArray = [Action]()
@@ -80,7 +80,7 @@ public class WhiskTokenizer {
                                         let fileUrl = URL(fileURLWithPath: actionPath)
                                         try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
                                         
-                                        let whiskAction = Action(name: action.actionName, path: actionPath, runtime: Runtime.Swift, parameters: nil)
+                                        let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift, parameters: nil)
                                         
                                         whiskActionArray.append(whiskAction)
                                         
@@ -110,7 +110,7 @@ public class WhiskTokenizer {
         let scanner = Scanner(string: str)
         
         var line: NSString?
-        var state = TokenState.Initial
+        var state = TokenState.initial
         var actionArray: [ActionToken]? = [ActionToken]()
         var actionName = ""
         var actionCode = ""
@@ -133,11 +133,11 @@ public class WhiskTokenizer {
             if trimmedLine.hasPrefix("//") {
                 //print("Skipping comment")
             } else if trimmedLine.hasPrefix("/*") {
-                state = TokenState.InStarComment
+                state = TokenState.inStarComment
             } else {
                 
                 switch state {
-                case .Initial:
+                case .initial:
                     if trimmedLine.hasPrefix("class") {
                         
                         let classStr = trimmedLine.components(separatedBy: ":")
@@ -184,14 +184,14 @@ public class WhiskTokenizer {
                         let newAction = ActionToken(actionName: actionName, actionCode: actionCode)
                         
                         actionArray?.append(newAction)
-                        state = TokenState.Initial
+                        state = TokenState.initial
                         actionName = ""
                         actionCode = ""
                         
                         leftBracketCount = 0
                         rightBracketCount = 0
                         
-                        state = TokenState.Initial
+                        state = TokenState.initial
                         
                     } else {
                         
@@ -205,9 +205,9 @@ public class WhiskTokenizer {
                         }
                     }
                     
-                case .InStarComment:
+                case .inStarComment:
                     if trimmedLine.hasSuffix("*/") {
-                        state = TokenState.Initial
+                        state = TokenState.initial
                     }
                 default:
                     //print("Don't care")

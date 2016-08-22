@@ -26,11 +26,11 @@ class WhiskInstaller {
     }
     
     func staticMode() {
-        let argCount = Process.argc
-        let argument = Process.arguments[1]
+        let argCount = CommandLine.argc
+        let argument = CommandLine.arguments[1]
 
         if argCount > 2 {
-            projectPath = NSString(string: Process.arguments[2]).expandingTildeInPath as String
+            projectPath = NSString(string: CommandLine.arguments[2]).expandingTildeInPath as String
         }
         
         var offset = 0
@@ -41,7 +41,7 @@ class WhiskInstaller {
         }
         
         let skipDashIndex = argument.index(argument.startIndex, offsetBy: offset)
-        let (option, value) = consoleIO.getOption(option: argument.substring(from: skipDashIndex))
+        let (option, _) = consoleIO.getOption(argument.substring(from: skipDashIndex))
         
         switch option {
         case .Build:
@@ -95,7 +95,7 @@ class WhiskInstaller {
                 }
             }
             
-            if let tokens = tokens, namespace = namespace {
+            if let tokens = tokens, let namespace = namespace {
                 let credentials = WhiskCredentials(accessKey: tokens[0], accessToken: tokens[1])
                 return ProjectManager(path: projectPath!, credentials: credentials, namespace: namespace)
             }

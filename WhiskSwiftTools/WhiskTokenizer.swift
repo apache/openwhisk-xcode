@@ -21,6 +21,21 @@ public struct ActionToken {
     var actionCode: String
 }
 
+public struct TriggerToken {
+    var triggerName: String
+}
+
+public struct RuleToken {
+    var ruleName: String
+    var triggerName: String
+    var actionName: String
+}
+
+public struct SequenceToken {
+    var sequenceName: String
+    var actionNames: [String]
+}
+
 enum TokenState {
     case inStarComment
     case inSlashComment
@@ -38,19 +53,22 @@ open class WhiskTokenizer {
     
     var atPath: String!
     var toPath: String!
-    open var actions = [ActionToken]()
     
     public init(from: String, to: String) {
         atPath = from
         toPath = to
     }
     
-    open func readXCodeProjectDirectory() throws -> [Action] {
+    open func readXCodeProjectDirectory() throws -> (actions: [Action],triggers: [Trigger], rules: [Rule], sequences: [Sequence]) {
         let dir: FileManager = FileManager.default
         
         var whiskActionArray = [Action]()
+        var whiskTriggerArray = [Trigger]()
+        var whiskRuleArray = [Rule]()
+        var whiskSequenceArray = [Sequence]()
+        
         if let enumerator: FileManager.DirectoryEnumerator = dir.enumerator(atPath: atPath) {
-
+            
             while let item = enumerator.nextObject() as? NSString {
                 
                 var isDir = ObjCBool(false)
@@ -64,11 +82,9 @@ open class WhiskTokenizer {
                         
                         do {
                             let fileStr = try String(contentsOfFile: fullPath)
-                            if let actionArray = getActions(str: fileStr) {
-                                for action in actionArray {
-                                    
-                                    actions.append(action)
-                                    
+                            if let entityTuple = getWhiskEntities(str: fileStr) {
+                                
+                                for action in entityTuple.0 {
                                     do {
                                         
                                         let actionDirPath = toPath+"/\(OpenWhiskActionDirectory)"
@@ -88,8 +104,13 @@ open class WhiskTokenizer {
                                         print("Error writing actions from Xcode \(error)")
                                     }
                                 }
+                                
+                                for trigger in entityTuple.1 {
+                                    let whiskTrigger = Trigger(name: trigger.triggerName as NSString, feed: nil, parameters: nil)
+                                    whiskTriggerArray.append(whiskTrigger)
+                                }
+                                
                             }
-                            
                             
                         } catch {
                             print("Error \(error)")
@@ -102,16 +123,20 @@ open class WhiskTokenizer {
             
         }
         
-        return whiskActionArray
+        return (whiskActionArray, whiskTriggerArray, whiskRuleArray, whiskSequenceArray)
     }
     
-    func getActions(str: String) -> [ActionToken]? {
+    func getWhiskEntities(str: String) -> ([ActionToken], [TriggerToken], [RuleToken], [SequenceToken])? {
         
         let scanner = Scanner(string: str)
         
         var line: NSString?
         var state = TokenState.initial
-        var actionArray: [ActionToken]? = [ActionToken]()
+        var actionArray = [ActionToken]()
+        var triggerArray = [TriggerToken]()
+        var ruleArray = [RuleToken]()
+        var sequenceArray = [SequenceToken]()
+        
         var actionName = ""
         var actionCode = ""
         var leftBracketCount = 0
@@ -128,8 +153,7 @@ open class WhiskTokenizer {
             }
             
             var trimmedLine = line.trimmingCharacters(in: CharacterSet.whitespaces)
-            
-            //print("Inspecting line \(trimmedLine)")
+
             if trimmedLine.hasPrefix("//") {
                 //print("Skipping comment")
             } else if trimmedLine.hasPrefix("/*") {
@@ -138,29 +162,40 @@ open class WhiskTokenizer {
                 
                 switch state {
                 case .initial:
-                    if trimmedLine.hasPrefix("class") {
+                    if trimmedLine.range(of: "class") != nil && trimmedLine.range(of: "WhiskTrigger") != nil && trimmedLine.range(of: ":") != nil {
                         
                         let classStr = trimmedLine.components(separatedBy: ":")
-                        if classStr.count > 1 {
-                            
-                            if classStr[1].range(of: "WhiskAction") != nil {
-                                // get actionName
-                                let classIndex = classStr[0].characters.index(classStr[0].startIndex, offsetBy: 6)
-                                
-                                actionName = classStr[0].substring(from: classIndex).trimmingCharacters(in: CharacterSet.whitespaces)
-                                
-                                state = TokenState.parseAction
-                                var tok = trimmedLine.components(separatedBy: "{")
-                                leftBracketCount = tok.count - 1
-                                tok = trimmedLine.components(separatedBy: "}")
-                                rightBracketCount = tok.count - 1
-                            }
-                            
-                        }
-                    } else {
-                        //print("Don't care, looking for class")
+                        
+                        // get actionName
+                        let classIndex = classStr[0].characters.index(classStr[0].startIndex, offsetBy: 6)
+                        
+                        let triggerName = classStr[0].substring(from: classIndex).trimmingCharacters(in: CharacterSet.whitespaces)
+                        
+                        print("Trigger name is \(triggerName)")
+                        
+                        let triggerToken = TriggerToken(triggerName: triggerName)
+                        triggerArray.append(triggerToken)
+                        
+                    } else if trimmedLine.range(of: "WhiskRule") != nil {
+                        
+                    } else if trimmedLine.range(of: "WhiskSequence") != nil {
+                        
+                    } else if trimmedLine.range(of: "OpenWhiskAction") == nil && trimmedLine.range(of: "class") != nil && trimmedLine.range(of: ":") != nil && trimmedLine.range(of: "WhiskAction") != nil {
+                        
+                        let classStr = trimmedLine.components(separatedBy: ":")
+                        
+                        // get actionName
+                        let classIndex = classStr[0].characters.index(classStr[0].startIndex, offsetBy: 6)
+                        
+                        actionName = classStr[0].substring(from: classIndex).trimmingCharacters(in: CharacterSet.whitespaces)
+                        
+                        state = TokenState.parseAction
+                        var tok = trimmedLine.components(separatedBy: "{")
+                        leftBracketCount = tok.count - 1
+                        tok = trimmedLine.components(separatedBy: "}")
+                        rightBracketCount = tok.count - 1
+                        
                     }
-                    
                 case .parseAction:
                     
                     var lookingForLeftBracket = false
@@ -183,7 +218,7 @@ open class WhiskTokenizer {
                         
                         let newAction = ActionToken(actionName: actionName, actionCode: actionCode)
                         
-                        actionArray?.append(newAction)
+                        actionArray.append(newAction)
                         state = TokenState.initial
                         actionName = ""
                         actionCode = ""
@@ -220,11 +255,11 @@ open class WhiskTokenizer {
         if state == .parseAction {
             let code = String(actionCode.characters.dropLast())
             let newAction = ActionToken(actionName: actionName, actionCode: code)
-            actionArray?.append(newAction)
+            actionArray.append(newAction)
             
         }
         
-        return actionArray
+        return (actionArray, triggerArray, ruleArray, sequenceArray)
     }
     
 }

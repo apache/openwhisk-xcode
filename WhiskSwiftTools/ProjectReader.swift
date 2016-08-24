@@ -332,10 +332,22 @@ open class ProjectReader {
             let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath)
             
             do {
-                let xcodeActions = try xcodeProject.readXCodeProjectDirectory()
+                let xcodeTuple = try xcodeProject.readXCodeProjectDirectory()
                 
-                for xcodeAction in xcodeActions {
-                    actionsDict[xcodeAction.name] = xcodeAction
+                for entity in xcodeTuple.actions{
+                    actionsDict[entity.name] = entity
+                }
+                
+                for entity in xcodeTuple.triggers {
+                    triggerDict[entity.name] = entity
+                }
+                
+                for entity in xcodeTuple.rules {
+                    ruleDict[entity.name] = entity
+                }
+                
+                for entity in xcodeTuple.sequences {
+                    sequenceDict[entity.name] = entity
                 }
                 
             } catch {

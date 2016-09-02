@@ -64,6 +64,8 @@ class WhiskInstaller {
             } catch {
                 print("Error installing OpenWhisk project \(error)")
             }
+        case .Version:
+            ConsoleIO.printVersion()
         case .Help:
             ConsoleIO.printUsage()
         case .Undefined:

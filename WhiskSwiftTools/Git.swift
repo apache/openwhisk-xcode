@@ -32,7 +32,7 @@ class Git {
         request.httpMethod = "GET"
         
         group.enter()
-        let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: NSError?) -> Void in
+        let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             if (error == nil) {
                 // Success
                 let statusCode = (response as! HTTPURLResponse).statusCode
@@ -65,7 +65,7 @@ class Git {
             }
             
             group.leave()
-        } as! (Data?, URLResponse?, Error?) -> Void)
+        }) //as! (Data?, URLResponse?, Error?) -> Void)
         task.resume()
     }
 }

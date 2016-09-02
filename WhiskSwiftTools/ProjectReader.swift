@@ -246,25 +246,25 @@ open class ProjectReader {
         }
     }
     
-    open func detectXcode(_ path: String) -> Bool {
+    open func detectXcode(_ path: String) -> (isXcode: Bool, projectName: NSString?) {
         let fileManager = FileManager.default
         if let enumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(atPath: path) {
             while let item = enumerator.nextObject() as? NSString {
                 if item.pathComponents.count == 1 {
                     if item.pathExtension == "xcodeproj" {
-                        return true
+                        return (isXcode: true, projectName: "\(path)/\(item)" as NSString)
                     }
                 }
             }
         }
-        return false
+        return (isXcode: false, projectName: nil)
     }
     
     open func readDirectory(_ dirPath: String, isDependency: Bool) throws {
         
         let isXcode = detectXcode(dirPath)
         
-        if isXcode == false {
+        if isXcode.isXcode == false {
             let dir: FileManager = FileManager.default
             
             if let enumerator: FileManager.DirectoryEnumerator = dir.enumerator(atPath: dirPath) {
@@ -329,7 +329,9 @@ open class ProjectReader {
                 try self.processManifestFiles(self.manifestDict)
             }
         } else {
-            let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath)
+            
+            print("Found xcode directory \(isXcode.projectName!)" )
+            let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath, projectFile: isXcode.projectName!)
             
             do {
                 let xcodeTuple = try xcodeProject.readXCodeProjectDirectory()

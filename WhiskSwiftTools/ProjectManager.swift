@@ -49,7 +49,7 @@ open class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
-                    if self.projectReader?.detectXcode(self.path) == false {
+                    if self.projectReader?.detectXcode(self.path).isXcode == false {
                         try self.projectReader?.readRootDependencies(true)
                     }
                     
@@ -95,7 +95,7 @@ open class ProjectManager {
                 do {
                     self.projectReader?.clearAll()
                     
-                    if self.projectReader?.detectXcode(self.path) == false {
+                    if self.projectReader?.detectXcode(self.path).isXcode == false {
                         try self.projectReader?.readRootDependencies(false)
                     }
                     try self.projectReader?.readProjectDirectory()

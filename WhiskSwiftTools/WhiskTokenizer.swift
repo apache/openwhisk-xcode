@@ -49,14 +49,27 @@ enum TokenState {
 
 open class WhiskTokenizer {
     
-    let OpenWhiskActionDirectory = "OpenWhiskActions"
+    let OpenWhiskActionTarget = "OpenWhiskActions"
     
     var atPath: String!
     var toPath: String!
+    var projectFileName: NSString!
     
-    public init(from: String, to: String) {
+    public init(from: String, to: String, projectFile: NSString) {
         atPath = from
         toPath = to
+        self.projectFileName = projectFile
+    }
+    
+    func readTargetSourceFiles() -> [String] {
+        let pbxProject = PBXProject(file: projectFileName as String, targetName: OpenWhiskActionTarget)
+        
+        var filesForTarget = pbxProject.filesForTarget
+        for (target, files) in filesForTarget {
+            print("target:\(target), files:\(files)")
+        }
+        
+        return filesForTarget[OpenWhiskActionTarget]!
     }
     
     open func readXCodeProjectDirectory() throws -> (actions: [Action],triggers: [Trigger], rules: [Rule], sequences: [Sequence]) {
@@ -66,6 +79,8 @@ open class WhiskTokenizer {
         var whiskTriggerArray = [Trigger]()
         var whiskRuleArray = [Rule]()
         var whiskSequenceArray = [Sequence]()
+        
+        let fileList = readTargetSourceFiles()
         
         if let enumerator: FileManager.DirectoryEnumerator = dir.enumerator(atPath: atPath) {
             
@@ -80,40 +95,42 @@ open class WhiskTokenizer {
                         
                     }  else if item.hasSuffix(".swift") {
                         
-                        do {
-                            let fileStr = try String(contentsOfFile: fullPath)
-                            if let entityTuple = getWhiskEntities(str: fileStr) {
-                                
-                                for action in entityTuple.0 {
-                                    do {
-                                        
-                                        let actionDirPath = toPath+"/\(OpenWhiskActionDirectory)"
-                                        
-                                        try FileManager.default.createDirectory(atPath: actionDirPath, withIntermediateDirectories: true, attributes: nil)
-                                        
-                                        let actionPath = actionDirPath+"/\(action.actionName).swift"
-                                        
-                                        let fileUrl = URL(fileURLWithPath: actionPath)
-                                        try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
-                                        
-                                        let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift, parameters: nil)
-                                        
-                                        whiskActionArray.append(whiskAction)
-                                        
-                                    } catch {
-                                        print("Error writing actions from Xcode \(error)")
+                        if fileList.contains(item.lastPathComponent as String) {
+                            do {
+                                let fileStr = try String(contentsOfFile: fullPath)
+                                if let entityTuple = getWhiskEntities(str: fileStr) {
+                                    
+                                    for action in entityTuple.0 {
+                                        do {
+                                            
+                                            let actionDirPath = toPath+"/\(OpenWhiskActionTarget)"
+                                            
+                                            try FileManager.default.createDirectory(atPath: actionDirPath, withIntermediateDirectories: true, attributes: nil)
+                                            
+                                            let actionPath = actionDirPath+"/\(action.actionName).swift"
+                                            
+                                            let fileUrl = URL(fileURLWithPath: actionPath)
+                                            try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
+                                            
+                                            let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift, parameters: nil)
+                                            
+                                            whiskActionArray.append(whiskAction)
+                                            
+                                        } catch {
+                                            print("Error writing actions from Xcode \(error)")
+                                        }
                                     }
+                                    
+                                    for trigger in entityTuple.1 {
+                                        let whiskTrigger = Trigger(name: trigger.triggerName as NSString, feed: nil, parameters: nil)
+                                        whiskTriggerArray.append(whiskTrigger)
+                                    }
+                                    
                                 }
                                 
-                                for trigger in entityTuple.1 {
-                                    let whiskTrigger = Trigger(name: trigger.triggerName as NSString, feed: nil, parameters: nil)
-                                    whiskTriggerArray.append(whiskTrigger)
-                                }
-                                
+                            } catch {
+                                print("Error \(error)")
                             }
-                            
-                        } catch {
-                            print("Error \(error)")
                         }
                     }
                 }
@@ -153,7 +170,7 @@ open class WhiskTokenizer {
             }
             
             var trimmedLine = line.trimmingCharacters(in: CharacterSet.whitespaces)
-
+            
             if trimmedLine.hasPrefix("//") {
                 //print("Skipping comment")
             } else if trimmedLine.hasPrefix("/*") {

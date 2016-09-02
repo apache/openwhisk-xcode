@@ -16,8 +16,11 @@
 
 import Foundation
 
+let version = "0.1.0"
+
 enum OptionType: String {
     case Build = "build"
+    case Version = "version"
     case Help = "help"
     case Delete = "delete"
     case Undefined
@@ -28,6 +31,10 @@ enum OptionType: String {
             self = .Build
         case "uninstall":
             self = .Delete
+        case "version":
+            self = .Version
+        case "v":
+            self = .Version
         case "help":
             self = .Help
         case "h":
@@ -56,6 +63,10 @@ class ConsoleIO {
         print ("\(executableName) uninstall <project directory>")
         
         print ("Type \(executableName) -h or --help to show usage information")
+    }
+    
+    class func printVersion() {
+        print("\(version)")
     }
     
     func getOption(_ option: String) -> (option: OptionType, value: String) {

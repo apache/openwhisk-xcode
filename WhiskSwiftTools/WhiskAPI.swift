@@ -314,17 +314,23 @@ class WhiskAPI {
         
         
         let path = "namespaces/\(namespace)/rules/\(name)"
-        let whiskParameters = ["trigger": triggerName, "action": actionName]
+        let whiskParameters = ["action": actionName,"trigger":triggerName]
         
         group.enter()
-        try networkManager.putCall(url: urlStr, path: path, parameters: whiskParameters as [String : AnyObject]?, group: group)
+        try networkManager.putCall(url: urlStr, path: path, parameters: whiskParameters as [String : AnyObject], group: group) {
+            response, error in
+            if let error = error {
+                print("Error creating rule \(name), error \(error)")
+            } else {
+                print("Created rule response \(response)")
+            }
+        }
         
     }
     
     func enableRule(name: String, namespace: String, triggerName: String, actionName: String, group: DispatchGroup) throws {
         
         let urlStr: String = whiskBaseURL != nil ? whiskBaseURL! : DefaultBaseURL
-        
         
         let path = "namespaces/\(namespace)/rules/\(name)"
         
@@ -528,9 +534,9 @@ class WhiskNetworkManager {
         request.addValue("Basic \(whiskCredentials.getBase64AuthString())", forHTTPHeaderField: "Authorization")
         request.httpMethod = "PUT"
         
+        
         if let parameters = parameters {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters as AnyObject, options: JSONSerialization.WritingOptions())
-            
         }
         
         let task = urlSession.dataTask(with: request) {
@@ -552,7 +558,12 @@ class WhiskNetworkManager {
                 
             } else {
                 if let callback = callback {
-                    callback(["status":statusCode, "msg":"PUT call success"], nil)
+                    do {
+                    let respMsg = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions())
+                    callback(["status":statusCode, "msg":respMsg], nil)
+                    } catch {
+                        print("Error serialzing server response \(error)")
+                    }
                 }
             }
             

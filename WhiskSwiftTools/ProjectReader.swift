@@ -345,12 +345,14 @@ open class ProjectReader {
                 }
                 
                 for entity in xcodeTuple.rules {
+                    print("Processing rule \(entity.name)")
                     ruleDict[entity.name] = entity
                 }
                 
                 for entity in xcodeTuple.sequences {
                     sequenceDict[entity.name] = entity
                 }
+                
                 
             } catch {
                 print("Error reading xcode project \(error)")

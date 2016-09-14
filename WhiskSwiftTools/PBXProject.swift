@@ -13,6 +13,7 @@ enum PBXParseState {
     case inTarget
     case inNamedTarget
     case inSources
+    case inResources
     case inFiles
     case parseFileNames
     case done
@@ -63,10 +64,19 @@ class PBXProject {
                         parseState = .inSources
                         let components = trimmedLine.components(separatedBy: CharacterSet.whitespaces)
                         targetKey = components[0]
+                    } else if trimmedLine.range(of: "/* Resources */") != nil {
+                        parseState = .inResources
+                        let components = trimmedLine.components(separatedBy: CharacterSet.whitespaces)
+                        targetKey = components[0]
                     }
 
                 case .inSources:
                     let token = "\(targetKey!) /* Sources */"
+                    if trimmedLine.range(of: token ) != nil {
+                        parseState = .inFiles
+                    }
+                case .inResources:
+                    let token = "\(targetKey!) /* Resources */"
                     if trimmedLine.range(of: token ) != nil {
                         parseState = .inFiles
                     }
@@ -75,7 +85,7 @@ class PBXProject {
                         parseState = .parseFileNames
                     }
                 case .parseFileNames:
-                    if (trimmedLine.range(of: "in Sources */") != nil) {
+                    if (trimmedLine.range(of: "in Sources */") != nil) || (trimmedLine.range(of: "in Resources */") != nil) {
                         let components = trimmedLine.components(separatedBy: CharacterSet.whitespaces)
                         let fileName = components[2]                        
                         if var files = filesForTarget[targetName] {

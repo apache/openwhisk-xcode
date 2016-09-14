@@ -89,18 +89,19 @@ open class WhiskTokenizer {
                 var isDir = ObjCBool(false)
                 let fullPath = atPath+"/\(item)"
                 
-                //print("===== inspecting \(fullPath)")
+                print("===== inspecting \(item.lastPathComponent)")
                 if dir.fileExists(atPath: fullPath, isDirectory: &isDir) == true {
                     if isDir.boolValue == true {
                         
                     }  else if item.hasSuffix(".swift") {
                         
                         if fileList.contains(item.lastPathComponent as String) {
+                            print("****Processing \(item.lastPathComponent)")
                             do {
                                 let fileStr = try String(contentsOfFile: fullPath)
                                 if let entityTuple = getWhiskEntities(str: fileStr) {
                                     
-                                    for action in entityTuple.0 {
+                                    for action in entityTuple.actions {
                                         do {
                                             
                                             let actionDirPath = toPath+"/\(OpenWhiskActionTarget)"
@@ -121,9 +122,19 @@ open class WhiskTokenizer {
                                         }
                                     }
                                     
-                                    for trigger in entityTuple.1 {
+                                    for trigger in entityTuple.triggers {
                                         let whiskTrigger = Trigger(name: trigger.triggerName as NSString, feed: nil, parameters: nil)
                                         whiskTriggerArray.append(whiskTrigger)
+                                    }
+                                    
+                                    for rule in entityTuple.rules {
+                                        let rule = Rule(name: rule.ruleName as NSString, trigger: rule.triggerName as NSString, action: rule.actionName as NSString)
+                                        whiskRuleArray.append(rule)
+                                    }
+                                    
+                                    for sequence in entityTuple.sequences {
+                                        let seq = Sequence(name: sequence.sequenceName as NSString, actions: sequence.actionNames)
+                                        whiskSequenceArray.append(seq)
                                     }
                                     
                                 }
@@ -143,7 +154,7 @@ open class WhiskTokenizer {
         return (whiskActionArray, whiskTriggerArray, whiskRuleArray, whiskSequenceArray)
     }
     
-    func getWhiskEntities(str: String) -> ([ActionToken], [TriggerToken], [RuleToken], [SequenceToken])? {
+    func getWhiskEntities(str: String) -> (actions: [ActionToken], triggers: [TriggerToken], rules: [RuleToken], sequences: [SequenceToken])? {
         
         let scanner = Scanner(string: str)
         
@@ -179,23 +190,50 @@ open class WhiskTokenizer {
                 
                 switch state {
                 case .initial:
-                    if trimmedLine.range(of: "class") != nil && trimmedLine.range(of: "WhiskTrigger") != nil && trimmedLine.range(of: ":") != nil {
+                    if trimmedLine.range(of: "let") != nil && trimmedLine.range(of: "WhiskTrigger()") != nil {
                         
-                        let classStr = trimmedLine.components(separatedBy: ":")
-                        
+                        let classStr = trimmedLine.components(separatedBy: "=")
                         // get actionName
-                        let classIndex = classStr[0].characters.index(classStr[0].startIndex, offsetBy: 6)
-                        
-                        let triggerName = classStr[0].substring(from: classIndex).trimmingCharacters(in: CharacterSet.whitespaces)
-                        
-                        print("Trigger name is \(triggerName)")
-                        
+                        let letStr = classStr[0].components(separatedBy: .whitespaces)
+                        let triggerName = letStr[1]
                         let triggerToken = TriggerToken(triggerName: triggerName)
                         triggerArray.append(triggerToken)
                         
-                    } else if trimmedLine.range(of: "WhiskRule") != nil {
+                    } else if trimmedLine.range(of: "let") != nil && trimmedLine.range(of: "WhiskRule(") != nil && trimmedLine.range(of: "trigger:") != nil && trimmedLine.range(of: "action:") != nil{
+                        var classStr = trimmedLine.components(separatedBy: "=")
+                        let letStr = classStr[0].components(separatedBy: .whitespaces)
+                        let ruleName = letStr[1].trimmingCharacters(in: .whitespacesAndNewlines)
                         
-                    } else if trimmedLine.range(of: "WhiskSequence") != nil {
+                        let paramStr = classStr[1].replacingOccurrences(of: "WhiskRule", with: "").components(separatedBy: ",")
+                        let triggerStr = paramStr[0].components(separatedBy: ":")
+                        let triggerName = triggerStr[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                        var actionStr = paramStr[1].components(separatedBy: ":")
+                        let actionName = actionStr[1].replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").trimmingCharacters(in: .whitespaces)
+                        
+                        
+
+                        print("Got trigger:\(triggerName), action:\(actionName)")
+                        
+                        let rule = RuleToken(ruleName: ruleName, triggerName: triggerName, actionName: actionName)
+                        ruleArray.append(rule)
+                        
+                    } else if trimmedLine.range(of: "let") != nil && trimmedLine.range(of: "WhiskSequence(") != nil {
+                        var classStr = trimmedLine.components(separatedBy: "=")
+                        let letStr = classStr[0].components(separatedBy: .whitespaces)
+                        let sequenceName = letStr[1]
+                        
+                        let paramStr = classStr[1].replacingOccurrences(of: "WhiskSequence", with: "").components(separatedBy: ":")
+                        
+                        let actionNames = paramStr[1].replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: " ", with: "")
+                        
+                        print("Got sequence \(actionNames)")
+                        let names = actionNames.components(separatedBy: ",")
+                        var sequenceActions = [String]()
+                        for name in names {
+                            sequenceActions.append(name)
+                        }
+                        let sequence = SequenceToken(sequenceName: sequenceName, actionNames: sequenceActions)
+                        sequenceArray.append(sequence)
                         
                     } else if trimmedLine.range(of: "OpenWhiskAction") == nil && trimmedLine.range(of: "class") != nil && trimmedLine.range(of: ":") != nil && trimmedLine.range(of: "WhiskAction") != nil {
                         
@@ -276,7 +314,7 @@ open class WhiskTokenizer {
             
         }
         
-        return (actionArray, triggerArray, ruleArray, sequenceArray)
+        return (actions: actionArray, triggers: triggerArray, rules: ruleArray, sequences: sequenceArray)
     }
     
 }

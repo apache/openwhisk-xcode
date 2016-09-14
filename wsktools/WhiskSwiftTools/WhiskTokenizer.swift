@@ -159,7 +159,7 @@ open class WhiskTokenizer {
         } else {
             print("No files for given target \(targetName!)")
         }
-
+        
         
         return (whiskActionArray, whiskTriggerArray, whiskRuleArray, whiskSequenceArray)
     }
@@ -328,4 +328,3 @@ open class WhiskTokenizer {
     }
     
 }
-

@@ -62,7 +62,7 @@ open class ProjectManager {
                     try self.installActions()
                     try self.installSequences()
                     try self.installRules()
-                    try self.enableRules()
+                    //try self.enableRules()
                     
                     group.leave()
                 } catch {
@@ -197,6 +197,7 @@ open class ProjectManager {
         let group = DispatchGroup()
         
         for (name, rule) in rules {
+            print("Creating rule \(name)")
             try whisk.createRule(name: name as String, namespace: namespace, triggerName: rule.trigger as String, actionName: rule.action as String, group: group)
         }
         

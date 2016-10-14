@@ -38,7 +38,7 @@ open class ProjectManager {
         
     }
     
-    open func deployProject() throws {
+    open func deployProject(target: String? = nil) throws {
         if (projectReader) != nil {
             
             let group = DispatchGroup()
@@ -53,7 +53,7 @@ open class ProjectManager {
                         try self.projectReader?.readRootDependencies(true)
                     }
                     
-                    try self.projectReader?.readProjectDirectory()
+                    try self.projectReader?.readProjectDirectory(target: target)
                     
                     //self.projectReader?.dumpProjectStructure()
                     
@@ -84,7 +84,7 @@ open class ProjectManager {
         }
     }
     
-    open func deleteProject() throws {
+    open func deleteProject(target: String? = nil) throws {
         
         if projectReader != nil {
             let group = DispatchGroup()
@@ -98,7 +98,7 @@ open class ProjectManager {
                     if self.projectReader?.detectXcode(self.path).isXcode == false {
                         try self.projectReader?.readRootDependencies(false)
                     }
-                    try self.projectReader?.readProjectDirectory()
+                    try self.projectReader?.readProjectDirectory(target: target)
                    // self.projectReader?.dumpProjectStructure()
                     
                     try self.deleteRules()

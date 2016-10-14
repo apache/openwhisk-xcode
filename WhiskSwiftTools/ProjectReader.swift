@@ -216,9 +216,9 @@ open class ProjectReader {
         try readDependencies(clone)
     }
     
-    open func readProjectDirectory() throws {
+    open func readProjectDirectory(target: String? = nil) throws {
         // read project directory
-        try readDirectory(projectPath, isDependency: false)
+        try readDirectory(projectPath, target: target, isDependency: false)
         
         // read independent directories
     }
@@ -260,7 +260,7 @@ open class ProjectReader {
         return (isXcode: false, projectName: nil)
     }
     
-    open func readDirectory(_ dirPath: String, isDependency: Bool) throws {
+    open func readDirectory(_ dirPath: String, target: String? = nil, isDependency: Bool) throws {
         
         let isXcode = detectXcode(dirPath)
         
@@ -331,7 +331,7 @@ open class ProjectReader {
         } else {
             
             print("Found xcode directory \(isXcode.projectName!)" )
-            let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath, projectFile: isXcode.projectName!)
+            let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath, projectFile: isXcode.projectName!, target: target)
             
             do {
                 let xcodeTuple = try xcodeProject.readXCodeProjectDirectory()

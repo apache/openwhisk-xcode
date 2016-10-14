@@ -16,13 +16,15 @@
 
 import Foundation
 
-let version = "0.1.0"
+let version = "0.3.0"
 
 enum OptionType: String {
     case Build = "build"
     case Version = "version"
     case Help = "help"
     case Delete = "delete"
+    case Path = "path"
+    case Target = "target"
     case Undefined
     
     init(value: String) {
@@ -39,6 +41,16 @@ enum OptionType: String {
             self = .Help
         case "h":
             self = .Help
+        case "path":
+            self = .Path
+        case "p":
+            self = .Path
+        case "target":
+            self = .Target
+        case "t":
+            self = .Target
+
+            
         default:
             self = .Undefined
         }
@@ -53,14 +65,14 @@ class ConsoleIO {
         print ("usage:")
         print ("To install a project:")
         print ("=====================")
-        print ("\(executableName) install (for current directory)")
+        print ("\(executableName) install (for current directory) -t <optional target name>")
         print ("or")
-        print ("\(executableName) install <project directory>")
+        print ("\(executableName) install -p <optional project path> -t <optional target name>")
         print ("To uninstall a project:")
         print ("=======================")
-        print ("\(executableName) uninstall (for current directory)")
+        print ("\(executableName) uninstall (for current directory) -t <optional target name>")
         print ("or")
-        print ("\(executableName) uninstall <project directory>")
+        print ("\(executableName) uninstall -p <project directory> -t <optional target name>")
         
         print ("Type \(executableName) -h or --help to show usage information")
     }

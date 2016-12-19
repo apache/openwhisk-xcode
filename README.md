@@ -1,7 +1,7 @@
 # WhiskSwiftTools
 A collection of tools to help developers use OpenWhisk on OS X.  Implemented in Swift 3 because Swift 3.
 
-More documentation coming soon!
+The current version is 0.4.0.
 
 ## Features
 
@@ -39,7 +39,7 @@ _ Ignored files
 A Swift 3 set of protocols and classes that lets you implement actions in Xcode.  WhiskKit provides an Xcode to OpenWhisk bridge via `wsktool` that allows you to directly install WhiskKit actions into OpenWhisk.  To access the bridge, add dependency to the `root-manifest.json` where the `src` directory contains an Xcode project.  `wsktool` will search the project for Swift 3 actions.
 
 ## Building
-This code is build using Xcode 8 Beta 6.  
+This code is build using Xcode 8.2.  
 
 There is a dependency on an ObjC project [ZipArchive](https://github.com/ZipArchive/ZipArchive).  OS X CLI targets and frameworks don't play together very well. The "easiest" way to reference it is to add the code manually to WhiskSwiftTools.  Clone ZipArchive and install per the documentations on the ZipArchive readme. Copy the SSZipArchive folder into the project folder and link to the `libz` library. WhiskSwiftTools includes bridging header file you can reference.
 
@@ -59,9 +59,9 @@ AUTH=<auth token from openwhisk>
 You can add wsktool to the build pipeline of Xcode by [adding a "Run Script" phase](https://developer.apple.com/library/ios/recipes/xcode_help-project_editor/Articles/AddingaRunScriptBuildPhase.html) to your project's build phases.  Create a Run Script, then add the following line:
 
 ```
-/path/to/wsktool install $PROJECT_DIR
+/path/to/wsktool install -p $PROJECT_DIR -t <optional target name>
 ```
-where `path/to/wsktool` is the location where you installed the `wsktool` binary. This will run wsktool every time you build your project and automatically upload actions to OpenWhisk.
+where `path/to/wsktool` is the location where you installed the `wsktool` binary. This will run wsktool every time you build your project and automatically upload actions to OpenWhisk. It will default to the current directory.  You can override this with the '-p' flag to point to where your Xcode project file is.  You can specify the target that contains the OpenWhisk actions using '-t', otherwise it will default to a target called "OpenWhiskActions".  You have to add the target to your Xcode project.
 
 ### License
 

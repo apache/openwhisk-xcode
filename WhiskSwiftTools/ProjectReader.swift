@@ -94,10 +94,13 @@ open class ProjectReader {
     var manifestDict = [NSString: NSString]()
     var bindingsDict = [NSString: NSString]()
     
+    var target: String?
     
     
-    public init(path: String, repo: String? = nil, release: String? = nil) throws  {
+    
+    public init(path: String, repo: String? = nil, release: String? = nil, target: String?) throws  {
         
+        self.target = target
         
         if let repo = repo {
             
@@ -216,9 +219,9 @@ open class ProjectReader {
         try readDependencies(clone)
     }
     
-    open func readProjectDirectory(target: String? = nil) throws {
+    open func readProjectDirectory() throws {
         // read project directory
-        try readDirectory(projectPath, target: target, isDependency: false)
+        try readDirectory(projectPath, isDependency: false)
         
         // read independent directories
     }
@@ -260,7 +263,7 @@ open class ProjectReader {
         return (isXcode: false, projectName: nil)
     }
     
-    open func readDirectory(_ dirPath: String, target: String? = nil, isDependency: Bool) throws {
+    open func readDirectory(_ dirPath: String, isDependency: Bool) throws {
         
         let isXcode = detectXcode(dirPath)
         

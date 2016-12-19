@@ -20,7 +20,7 @@ class WhiskInstaller {
     
     let consoleIO = ConsoleIO()
     var projectPath: String!
-    var argumentTarget: String?
+    var argumentTarget: String? 
     
     init() {
         projectPath = getCurrentDirectory()
@@ -81,7 +81,7 @@ class WhiskInstaller {
             
             do {
                 if let pm = try setupProjectManager() {
-                    try pm.deployProject(target: argumentTarget)
+                    try pm.deployProject()
                 } else {
                     print("Error initializing wsktool")
                 }
@@ -91,7 +91,7 @@ class WhiskInstaller {
         } else {
             do {
                 if let pm = try setupProjectManager() {
-                    try pm.deleteProject(target: argumentTarget)
+                    try pm.deleteProject()
                 } else {
                     print("Error initializing wsktool")
                 }
@@ -126,9 +126,13 @@ class WhiskInstaller {
                 }
             }
             
+            if namespace == nil {
+                namespace = "_"
+            }
+            
             if let tokens = tokens, let namespace = namespace {
                 let credentials = WhiskCredentials(accessKey: tokens[0], accessToken: tokens[1])
-                return ProjectManager(path: projectPath!, credentials: credentials, namespace: namespace)
+                return ProjectManager(path: projectPath!, credentials: credentials, namespace: namespace, target:argumentTarget)
             }
         } catch {
             print("Error reading ~/.wskprops")

@@ -22,15 +22,17 @@ open class ProjectManager {
     let path: String!
     let projectReader: ProjectReader!
     let namespace: String!
+    var target: String?
     
     
-    public init(path: String, repo: String? = nil, release: String? = nil, xcodeDirectory: String? = nil, credentials: WhiskCredentials, namespace: String) {
+    public init(path: String, repo: String? = nil, release: String? = nil, xcodeDirectory: String? = nil, credentials: WhiskCredentials, namespace: String, target: String?) {
         whisk = WhiskAPI(credentials: credentials)
         self.path = path
         self.namespace = namespace
+        self.target = target
         
         do {
-            projectReader = try ProjectReader(path: path, repo: repo, release: release)
+            projectReader = try ProjectReader(path: path, repo: repo, release: release, target: target)
         } catch {
             projectReader = nil
             print("Error creating project \(error)")
@@ -38,7 +40,7 @@ open class ProjectManager {
         
     }
     
-    open func deployProject(target: String? = nil) throws {
+    open func deployProject() throws {
         if (projectReader) != nil {
             
             let group = DispatchGroup()
@@ -53,7 +55,7 @@ open class ProjectManager {
                         try self.projectReader?.readRootDependencies(true)
                     }
                     
-                    try self.projectReader?.readProjectDirectory(target: target)
+                    try self.projectReader?.readProjectDirectory()
                     
                     //self.projectReader?.dumpProjectStructure()
                     
@@ -84,7 +86,7 @@ open class ProjectManager {
         }
     }
     
-    open func deleteProject(target: String? = nil) throws {
+    open func deleteProject() throws {
         
         if projectReader != nil {
             let group = DispatchGroup()
@@ -98,7 +100,7 @@ open class ProjectManager {
                     if self.projectReader?.detectXcode(self.path).isXcode == false {
                         try self.projectReader?.readRootDependencies(false)
                     }
-                    try self.projectReader?.readProjectDirectory(target: target)
+                    try self.projectReader?.readProjectDirectory()
                    // self.projectReader?.dumpProjectStructure()
                     
                     try self.deleteRules()
@@ -198,7 +200,8 @@ open class ProjectManager {
         
         for (name, rule) in rules {
             print("Creating rule \(name)")
-            try whisk.createRule(name: name as String, namespace: namespace, triggerName: rule.trigger as String, actionName: rule.action as String, group: group)
+            
+            try whisk.createRule(name: name as String, namespace: namespace, triggerName: "/\(namespace!)/\(rule.trigger)", actionName: "/\(namespace!)/\(rule.action)" as String, group: group)
         }
         
         switch group.wait(timeout: DispatchTime.distantFuture) {

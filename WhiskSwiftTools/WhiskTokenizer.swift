@@ -59,7 +59,7 @@ open class WhiskTokenizer {
         atPath = from
         toPath = to
         if target != nil {
-            targetName = target
+            targetName = target!
         } else {
             targetName = "OpenWhiskActions"
         }
@@ -96,14 +96,14 @@ open class WhiskTokenizer {
                     var isDir = ObjCBool(false)
                     let fullPath = atPath+"/\(item)"
                     
-                    // print("===== inspecting \(item.lastPathComponent)")
+                    //print("===== inspecting \(item.lastPathComponent)")
                     if dir.fileExists(atPath: fullPath, isDirectory: &isDir) == true {
                         if isDir.boolValue == true {
                             
                         }  else if item.hasSuffix(".swift") {
                             
                             if fileList.contains(item.lastPathComponent as String) {
-                                // print("****Processing \(item.lastPathComponent)")
+                                print("****Processing \(item.lastPathComponent)")
                                 do {
                                     let fileStr = try String(contentsOfFile: fullPath)
                                     if let entityTuple = getWhiskEntities(str: fileStr) {
@@ -111,7 +111,7 @@ open class WhiskTokenizer {
                                         for action in entityTuple.actions {
                                             do {
                                                 
-                                                let actionDirPath = toPath+"/\(targetName)"
+                                                let actionDirPath = toPath+"/\(targetName!)"
                                                 
                                                 try FileManager.default.createDirectory(atPath: actionDirPath, withIntermediateDirectories: true, attributes: nil)
                                                 

@@ -51,7 +51,13 @@ Run `wsktool` from the command line. `wsktool install` will install the OpenWhis
 
 ```
 APIHOST=openwhisk.ng.bluemix.net
-NAMESPACE=<whatever namespace you are using>
+AUTH=<auth token from openwhisk>
+```
+By default, the tool uses your default namespace.  You can override this by specifying a namespace in your ~/.wskprops file:
+
+```
+APIHOST=openwhisk.ng.bluemix.net
+NAMESPACE=<my namespace>
 AUTH=<auth token from openwhisk>
 ```
 

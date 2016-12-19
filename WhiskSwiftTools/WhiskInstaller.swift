@@ -20,31 +20,65 @@ class WhiskInstaller {
     
     let consoleIO = ConsoleIO()
     var projectPath: String!
+    var argumentTarget: String? 
     
     init() {
         projectPath = getCurrentDirectory()
     }
     
     func staticMode() {
-        let argCount = CommandLine.argc
+        let argCount = Int(CommandLine.argc)
         let argument = CommandLine.arguments[1]
+        
+        var i = 1
+        var isBuild = true
 
-        if argCount > 2 {
-            projectPath = NSString(string: CommandLine.arguments[2]).expandingTildeInPath as String
+        
+        while (i < argCount) {
+            let arg = CommandLine.arguments[i]
+            
+            var offset = 0
+            if arg.hasPrefix("--") {
+                offset = 2
+            } else if arg.characters.first == "-" {
+                offset = 1
+            }
+            
+            let skipDashIndex = arg.index(argument.startIndex, offsetBy: offset)
+            let (option, _) = consoleIO.getOption(arg.substring(from: skipDashIndex))
+            
+            switch option {
+            case .Build:
+                isBuild = true
+                i = i + 1
+                print("Got build")
+            case .Delete:
+                isBuild = false
+                i = i + 1
+                print("Got delete")
+            case .Path:
+                projectPath = CommandLine.arguments[i+1]
+                i = i + 2
+                print("Got path \(projectPath)")
+            case .Target:
+                argumentTarget = CommandLine.arguments[i+1]
+                i = i + 2
+                print("Got target \(argumentTarget)")
+            case .Version:
+                ConsoleIO.printVersion()
+                i = i + 1
+            case .Help:
+                ConsoleIO.printUsage()
+                i = i + 1
+            case .Undefined:
+                ConsoleIO.printUsage()
+                i = i + 1
+
+            }
         }
         
-        var offset = 0
-        if argument.hasPrefix("--") {
-            offset = 2
-        } else if argument.characters.first == "-" {
-            offset = 1
-        }
-        
-        let skipDashIndex = argument.index(argument.startIndex, offsetBy: offset)
-        let (option, _) = consoleIO.getOption(argument.substring(from: skipDashIndex))
-        
-        switch option {
-        case .Build:
+        if isBuild == true {
+            
             do {
                 if let pm = try setupProjectManager() {
                     try pm.deployProject()
@@ -54,7 +88,7 @@ class WhiskInstaller {
             } catch {
                 print("Error installing OpenWhisk project \(error)")
             }
-        case .Delete:
+        } else {
             do {
                 if let pm = try setupProjectManager() {
                     try pm.deleteProject()
@@ -64,13 +98,8 @@ class WhiskInstaller {
             } catch {
                 print("Error installing OpenWhisk project \(error)")
             }
-        case .Version:
-            ConsoleIO.printVersion()
-        case .Help:
-            ConsoleIO.printUsage()
-        case .Undefined:
-            ConsoleIO.printUsage()
         }
+        
     }
     
     func getCurrentDirectory() -> String {
@@ -97,9 +126,13 @@ class WhiskInstaller {
                 }
             }
             
+            if namespace == nil {
+                namespace = "_"
+            }
+            
             if let tokens = tokens, let namespace = namespace {
                 let credentials = WhiskCredentials(accessKey: tokens[0], accessToken: tokens[1])
-                return ProjectManager(path: projectPath!, credentials: credentials, namespace: namespace)
+                return ProjectManager(path: projectPath!, credentials: credentials, namespace: namespace, target:argumentTarget)
             }
         } catch {
             print("Error reading ~/.wskprops")

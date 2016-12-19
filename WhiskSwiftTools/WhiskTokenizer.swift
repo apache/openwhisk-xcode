@@ -49,27 +49,32 @@ enum TokenState {
 
 open class WhiskTokenizer {
     
-    let OpenWhiskActionTarget = "OpenWhiskActions"
     
     var atPath: String!
     var toPath: String!
     var projectFileName: NSString!
+    var targetName: String!
     
-    public init(from: String, to: String, projectFile: NSString) {
+    public init(from: String, to: String, projectFile: NSString, target: String? ) {
         atPath = from
         toPath = to
+        if target != nil {
+            targetName = target!
+        } else {
+            targetName = "OpenWhiskActions"
+        }
         self.projectFileName = projectFile
     }
     
-    func readTargetSourceFiles() -> [String] {
-        let pbxProject = PBXProject(file: projectFileName as String, targetName: OpenWhiskActionTarget)
+    func readTargetSourceFiles() -> [String]? {
+        let pbxProject = PBXProject(file: projectFileName as String, targetName: targetName)
         
         var filesForTarget = pbxProject.filesForTarget
         for (target, files) in filesForTarget {
             print("target:\(target), files:\(files)")
         }
         
-        return filesForTarget[OpenWhiskActionTarget]!
+        return filesForTarget[targetName]
     }
     
     open func readXCodeProjectDirectory() throws -> (actions: [Action],triggers: [Trigger], rules: [Rule], sequences: [Sequence]) {
@@ -80,76 +85,81 @@ open class WhiskTokenizer {
         var whiskRuleArray = [Rule]()
         var whiskSequenceArray = [Sequence]()
         
-        let fileList = readTargetSourceFiles()
-        
-        if let enumerator: FileManager.DirectoryEnumerator = dir.enumerator(atPath: atPath) {
+        if let fileList = readTargetSourceFiles() {
             
-            while let item = enumerator.nextObject() as? NSString {
+            print("There are \(fileList.count) files for target \(targetName)")
+            
+            if let enumerator: FileManager.DirectoryEnumerator = dir.enumerator(atPath: atPath) {
                 
-                var isDir = ObjCBool(false)
-                let fullPath = atPath+"/\(item)"
-                
-                print("===== inspecting \(item.lastPathComponent)")
-                if dir.fileExists(atPath: fullPath, isDirectory: &isDir) == true {
-                    if isDir.boolValue == true {
-                        
-                    }  else if item.hasSuffix(".swift") {
-                        
-                        if fileList.contains(item.lastPathComponent as String) {
-                            print("****Processing \(item.lastPathComponent)")
-                            do {
-                                let fileStr = try String(contentsOfFile: fullPath)
-                                if let entityTuple = getWhiskEntities(str: fileStr) {
-                                    
-                                    for action in entityTuple.actions {
-                                        do {
-                                            
-                                            let actionDirPath = toPath+"/\(OpenWhiskActionTarget)"
-                                            
-                                            try FileManager.default.createDirectory(atPath: actionDirPath, withIntermediateDirectories: true, attributes: nil)
-                                            
-                                            let actionPath = actionDirPath+"/\(action.actionName).swift"
-                                            
-                                            let fileUrl = URL(fileURLWithPath: actionPath)
-                                            try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
-                                            
-                                            let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift, parameters: nil)
-                                            
-                                            whiskActionArray.append(whiskAction)
-                                            
-                                        } catch {
-                                            print("Error writing actions from Xcode \(error)")
+                while let item = enumerator.nextObject() as? NSString {
+                    
+                    var isDir = ObjCBool(false)
+                    let fullPath = atPath+"/\(item)"
+                    
+                    //print("===== inspecting \(item.lastPathComponent)")
+                    if dir.fileExists(atPath: fullPath, isDirectory: &isDir) == true {
+                        if isDir.boolValue == true {
+                            
+                        }  else if item.hasSuffix(".swift") {
+                            
+                            if fileList.contains(item.lastPathComponent as String) {
+                                print("****Processing \(item.lastPathComponent)")
+                                do {
+                                    let fileStr = try String(contentsOfFile: fullPath)
+                                    if let entityTuple = getWhiskEntities(str: fileStr) {
+                                        
+                                        for action in entityTuple.actions {
+                                            do {
+                                                
+                                                let actionDirPath = toPath+"/\(targetName!)"
+                                                
+                                                try FileManager.default.createDirectory(atPath: actionDirPath, withIntermediateDirectories: true, attributes: nil)
+                                                
+                                                let actionPath = actionDirPath+"/\(action.actionName).swift"
+                                                
+                                                let fileUrl = URL(fileURLWithPath: actionPath)
+                                                try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
+                                                
+                                                let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift, parameters: nil)
+                                                
+                                                whiskActionArray.append(whiskAction)
+                                                
+                                            } catch {
+                                                print("Error writing actions from Xcode \(error)")
+                                            }
                                         }
+                                        
+                                        for trigger in entityTuple.triggers {
+                                            let whiskTrigger = Trigger(name: trigger.triggerName as NSString, feed: nil, parameters: nil)
+                                            whiskTriggerArray.append(whiskTrigger)
+                                        }
+                                        
+                                        for rule in entityTuple.rules {
+                                            let rule = Rule(name: rule.ruleName as NSString, trigger: rule.triggerName as NSString, action: rule.actionName as NSString)
+                                            whiskRuleArray.append(rule)
+                                        }
+                                        
+                                        for sequence in entityTuple.sequences {
+                                            let seq = Sequence(name: sequence.sequenceName as NSString, actions: sequence.actionNames)
+                                            whiskSequenceArray.append(seq)
+                                        }
+                                        
                                     }
                                     
-                                    for trigger in entityTuple.triggers {
-                                        let whiskTrigger = Trigger(name: trigger.triggerName as NSString, feed: nil, parameters: nil)
-                                        whiskTriggerArray.append(whiskTrigger)
-                                    }
-                                    
-                                    for rule in entityTuple.rules {
-                                        let rule = Rule(name: rule.ruleName as NSString, trigger: rule.triggerName as NSString, action: rule.actionName as NSString)
-                                        whiskRuleArray.append(rule)
-                                    }
-                                    
-                                    for sequence in entityTuple.sequences {
-                                        let seq = Sequence(name: sequence.sequenceName as NSString, actions: sequence.actionNames)
-                                        whiskSequenceArray.append(seq)
-                                    }
-                                    
+                                } catch {
+                                    print("Error \(error)")
                                 }
-                                
-                            } catch {
-                                print("Error \(error)")
                             }
                         }
                     }
+                    
                 }
-                
-                
             }
             
+        } else {
+            print("No files for given target \(targetName!)")
         }
+
         
         return (whiskActionArray, whiskTriggerArray, whiskRuleArray, whiskSequenceArray)
     }
@@ -211,7 +221,7 @@ open class WhiskTokenizer {
                         let actionName = actionStr[1].replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").trimmingCharacters(in: .whitespaces)
                         
                         
-
+                        
                         print("Got trigger:\(triggerName), action:\(actionName)")
                         
                         let rule = RuleToken(ruleName: ruleName, triggerName: triggerName, actionName: actionName)

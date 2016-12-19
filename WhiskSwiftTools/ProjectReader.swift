@@ -94,10 +94,13 @@ open class ProjectReader {
     var manifestDict = [NSString: NSString]()
     var bindingsDict = [NSString: NSString]()
     
+    var target: String?
     
     
-    public init(path: String, repo: String? = nil, release: String? = nil) throws  {
+    
+    public init(path: String, repo: String? = nil, release: String? = nil, target: String?) throws  {
         
+        self.target = target
         
         if let repo = repo {
             
@@ -331,7 +334,7 @@ open class ProjectReader {
         } else {
             
             print("Found xcode directory \(isXcode.projectName!)" )
-            let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath, projectFile: isXcode.projectName!)
+            let xcodeProject = WhiskTokenizer(from: dirPath, to:projectPath, projectFile: isXcode.projectName!, target: target)
             
             do {
                 let xcodeTuple = try xcodeProject.readXCodeProjectDirectory()

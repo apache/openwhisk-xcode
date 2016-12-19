@@ -22,7 +22,7 @@ enum PBXParseState {
 class PBXProject {
     
     let fullPath: String!
-    let targetName: String!
+    let targetName: String
     var filesForTarget = [String:[String]]()
     
     init(file: String, targetName: String) {
@@ -47,7 +47,7 @@ class PBXProject {
                     print("PBXParse: Error, line from parseFile is nil, aborting.")
                     return
                 }
-                var trimmedLine = line.trimmingCharacters(in: CharacterSet.whitespaces)
+                let trimmedLine = line.trimmingCharacters(in: CharacterSet.whitespaces)
                 
                 switch parseState {
                 case .inital:
@@ -56,7 +56,7 @@ class PBXProject {
                         
                     }
                 case .inTarget:
-                    if trimmedLine.range(of: "PBXNativeTarget \"\(targetName!)\" */;") != nil {
+                    if trimmedLine.range(of: "PBXNativeTarget \"\(targetName)\" */;") != nil {
                         parseState = .inNamedTarget
                     }
                 case .inNamedTarget:

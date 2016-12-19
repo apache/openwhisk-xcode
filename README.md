@@ -3,6 +3,8 @@ A collection of tools to help developers use OpenWhisk on OS X.  Implemented in 
 
 The current version is 0.4.0.
 
+This code is experimental (very).
+
 Update: some of the functionality of this tool is moving to the OpenWhisk [wskdeploy tool](https://github.com/openwhisk/wskdeploy)
 
 ## Features

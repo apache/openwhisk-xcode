@@ -1,50 +1,51 @@
 {
   "images" : [
     {
-      "idiom" : "iphone",
       "size" : "20x20",
+      "idiom" : "iphone",
+      "filename" : "openwhisk_logo_large-7.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2-5.png",
+      "filename" : "openwhisk_logo_large-5.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2-4.png",
+      "filename" : "openwhisk_logo_large-6.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2-3.png",
+      "filename" : "openwhisk_logo_large-3.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2-2.png",
+      "filename" : "openwhisk_logo_large-4.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2-1.png",
+      "filename" : "openwhisk_logo_large-2.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2-6.png",
+      "filename" : "openwhisk_logo_large-1.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "openwhisk_hero_large 2.png",
+      "filename" : "openwhisk_logo_large.png",
       "scale" : "3x"
     }
   ],

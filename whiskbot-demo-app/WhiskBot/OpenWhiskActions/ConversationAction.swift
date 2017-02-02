@@ -32,7 +32,6 @@ private func getConstants(key: String)->String? {
     constants["slack_channel_url_general"] = "https://hooks.slack.com/services/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"
     constants["slack_channel_url_random"] = "https://hooks.slack.com/services/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"
     
-    
     return constants[key]
 }
 
@@ -166,8 +165,6 @@ private func checkForSlackPost(convoResponse: JSON) -> JSON{
     }
     
     return convoResponse
-    
-    
 }
 
 private func postToSlack(text: String, channel: String){
@@ -178,12 +175,12 @@ private func postToSlack(text: String, channel: String){
     initialMessageParam["username"] = "WhiskBot"
     
     if let channelURL = getConstants(key:"slack_channel_url_\(channel.lowercased)"){
-        
         initialMessageParam["url"] = channelURL
-        //print("Params \(initialMessageParam)")
+        
         if text.contains("to Slack"){
             initialMessageParam["text"] = text.components(separatedBy: "to Slack").last
         }
+        
         Whisk.invoke(actionNamed: "PostToSlack", withParameters: initialMessageParam)
     }else{
         print("Slack Channel URL not found in constants")
@@ -204,7 +201,6 @@ private func post(params : [String:Any], callback : @escaping([String:Any]) -> V
         let headers = ["Content-Type" : "application/json",
                        "Authorization" : authValue]
         
-        // TODO vary the schema based on the port?
         
         let requestOptions = [ClientRequest.Options.schema("https://"),
                               ClientRequest.Options.method("POST"),

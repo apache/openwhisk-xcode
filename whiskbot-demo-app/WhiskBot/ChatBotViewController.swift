@@ -22,9 +22,14 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        let whiskCreds = WhiskCredentials(accessKey: "0f4acfd7-5717-4315-aefe-729d654209e3", accessToken: "9MuYZ2UQ9bLPxw7qjzAsaBvfXHyexvO5Fi6iPemJvPoUA9f415nRNhClEfTy7moe")
-        whisk = Whisk(credentials: whiskCreds)
+        if let path = Bundle.main.path(forResource: "IBMConstants", ofType: "plist"), let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject], let accessKey = dict["whisk_access_key"] as? String, let accessToken = dict["whisk_access_token"] as? String {
+            
+            let whiskCreds = WhiskCredentials(accessKey: accessKey, accessToken: accessToken)
+            whisk = Whisk(credentials: whiskCreds)
+            
+        }else{
+            print("IBM OpenWhisk Credentials not found")
+        }
         
         self.senderId = "User"
         self.senderDisplayName = "Client"

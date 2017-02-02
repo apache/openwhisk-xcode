@@ -8,7 +8,6 @@
 
 import UIKit
 import JSQMessagesViewController
-import ConversationV1
 import OpenWhisk
 import SwiftyJSON
 import EventKit
@@ -17,17 +16,13 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
     
     var messageData = [JSQMessage]()
     
-    var conversation: Conversation? = nil
-    let workspaceID = "ba7fb238-bd2d-4cb9-9daf-c33c07469636"
-    let username = "eaebcebc-def4-4497-a6a0-6b4dceef6348"
-    let password = "IKRD6kjv8Fvu"
-    let version = "2017-01-18" // use today's date for the most recent version
     var context: JSON? // save context to continue conversation
     var whisk: Whisk?
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+        
+        
         let whiskCreds = WhiskCredentials(accessKey: "0f4acfd7-5717-4315-aefe-729d654209e3", accessToken: "9MuYZ2UQ9bLPxw7qjzAsaBvfXHyexvO5Fi6iPemJvPoUA9f415nRNhClEfTy7moe")
         whisk = Whisk(credentials: whiskCreds)
         
@@ -84,8 +79,6 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
         
     }
     
-    var lastSlackChannel = ""
-    
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
         print("Send message - \(text)")
@@ -136,18 +129,6 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
     func processActions(text: String, jsonResult: JSON){
         let lastNodeVisited = jsonResult["result"]["output"]["nodes_visited"].arrayObject?.first! as? String
         print("Last Node - \(lastNodeVisited)")
-        
-        if lastNodeVisited == "Slack Channel" {
-            let entities =  jsonResult["result"]["entities"]
-            //print("Entities \(entities)")
-            for entity in entities.arrayObject!{
-                if let dict = entity as? [String:Any]{
-                    if dict["entity"] as? String == "slack_channels" {
-                        self.lastSlackChannel = dict["value"] as! String
-                    }
-                }
-            }
-        }
         
         if lastNodeVisited == "Reminder Text" {
             self.context?["last_reminder_text"].string = text
@@ -238,37 +219,6 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
         }
     }
     
-    
-    func postToSlack(text: String, channel: String){
-        var initialMessageParam = [String:Any]()
-        initialMessageParam["text"] = text
-        initialMessageParam["channel"] = channel
-        initialMessageParam["username"] = "WhiskBot"
-        var channelURLDict = [String: String]()
-        channelURLDict["general"] = "https://hooks.slack.com/services/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"
-        channelURLDict["random"] = "https://hooks.slack.com/services/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"
-        
-        initialMessageParam["url"] = channelURLDict[channel.lowercased()]
-        print("Params \(initialMessageParam)")
-        if text.contains("to Slack"){
-            initialMessageParam["text"] = text.components(separatedBy: "to Slack").last
-        }
-        do{
-            try whisk?.invokeAction(name: "PostToSlack", package: "", namespace: "", parameters: initialMessageParam as AnyObject?, hasResult: true, callback: { (result, error) in
-                if error == nil{
-                    
-                    print("Success invoking whisk action with result - \(result)")
-                    
-                }else{
-                    print("error invoking - \(error)")
-                }
-            })
-        }catch{
-            print("Error thrown invoking whisk action")
-        }
-        
-    }
-    
     var eventStore: EKEventStore!
     var reminders: [EKReminder]!
     
@@ -298,6 +248,7 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
         
         self.present(alert, animated: true, completion: nil)
     }
+    
     //MARK : - Speech Recognition Delegates
     
     func finalAppleRecognitionRecieved(phrase: String) {

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ConversationV1
 
 class ChatViewController: UIViewController {
     @IBOutlet weak var chatButton: UIButton!

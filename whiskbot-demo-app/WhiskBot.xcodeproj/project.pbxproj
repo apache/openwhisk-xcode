@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A803C1101B4B47DEB480A56 /* Pods_WhiskBot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2178B8DCD3FA3ED7852EC98 /* Pods_WhiskBot.framework */; };
 		7F0044F61E2FF88E002A4B05 /* ChatBotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0044F51E2FF88E002A4B05 /* ChatBotViewController.swift */; };
-		7F254E581E2FD7170029B772 /* ConversationV1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F254E431E2FC9B70029B772 /* ConversationV1.framework */; };
-		7F254E5A1E2FD79D0029B772 /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F254E591E2FD79D0029B772 /* RestKit.framework */; };
+		7F08F8831E43B8D400A2C875 /* IBMConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F08F8821E43B8D400A2C875 /* IBMConstants.plist */; };
 		7F61C9AF1E3009EA00AF3443 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F61C9AE1E3009EA00AF3443 /* SpeechRecognizer.swift */; };
 		7F6E27BC1E2E73C50002E80B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27BB1E2E73C50002E80B /* AppDelegate.swift */; };
 		7F6E27BE1E2E73C50002E80B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27BD1E2E73C50002E80B /* ViewController.swift */; };
@@ -62,6 +61,7 @@
 		607D45ACE515D6A5F008D842 /* Pods-WhiskBot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBot/Pods-WhiskBot.debug.xcconfig"; sourceTree = "<group>"; };
 		61F3AE277EAA256CEBA7BD62 /* Pods-WhiskBotUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBotUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBotUITests/Pods-WhiskBotUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		7F0044F51E2FF88E002A4B05 /* ChatBotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBotViewController.swift; sourceTree = "<group>"; };
+		7F08F8821E43B8D400A2C875 /* IBMConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = IBMConstants.plist; sourceTree = "<group>"; };
 		7F0DDB211E3669EF00A7F99E /* ConversationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConversationAction.swift; path = OpenWhiskActions/ConversationAction.swift; sourceTree = "<group>"; };
 		7F254E411E2FC9AB0029B772 /* Build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Build; path = Carthage/Build; sourceTree = "<group>"; };
 		7F254E431E2FC9B70029B772 /* ConversationV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ConversationV1.framework; path = Carthage/Build/iOS/ConversationV1.framework; sourceTree = "<group>"; };
@@ -96,8 +96,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F254E5A1E2FD79D0029B772 /* RestKit.framework in Frameworks */,
-				7F254E581E2FD7170029B772 /* ConversationV1.framework in Frameworks */,
 				4A803C1101B4B47DEB480A56 /* Pods_WhiskBot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +187,7 @@
 				7F6E27BF1E2E73C50002E80B /* Main.storyboard */,
 				7F6E27EB1E2EA9E40002E80B /* ChatViewController.swift */,
 				7F0044F51E2FF88E002A4B05 /* ChatBotViewController.swift */,
+				7F08F8821E43B8D400A2C875 /* IBMConstants.plist */,
 				7F61C9AE1E3009EA00AF3443 /* SpeechRecognizer.swift */,
 				7F641C931E3145CA0004BEDF /* OpenWhisk Actions */,
 				7F6E27C21E2E73C50002E80B /* Assets.xcassets */,
@@ -228,7 +227,6 @@
 				7F6E27B51E2E73C50002E80B /* Frameworks */,
 				7F6E27B61E2E73C50002E80B /* Resources */,
 				7F254E4F1E2FCA4F0029B772 /* Embed Frameworks */,
-				7F254E571E2FD6BD0029B772 /* ShellScript */,
 				0EE5E942EB14E2A6A3036DA7 /* [CP] Embed Pods Frameworks */,
 				D9E43EAB6653C21A448C2DE0 /* [CP] Copy Pods Resources */,
 			);
@@ -336,6 +334,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F6E27C61E2E73C50002E80B /* LaunchScreen.storyboard in Resources */,
+				7F08F8831E43B8D400A2C875 /* IBMConstants.plist in Resources */,
 				7F6E27C31E2E73C50002E80B /* Assets.xcassets in Resources */,
 				7F6E27C11E2E73C50002E80B /* Main.storyboard in Resources */,
 			);
@@ -402,21 +401,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		7F254E571E2FD6BD0029B772 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/ConversationV1.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RestKit.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 		85628A6BD4F65CA247CADE61 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

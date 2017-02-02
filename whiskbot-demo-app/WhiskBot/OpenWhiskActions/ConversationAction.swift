@@ -174,7 +174,7 @@ private func postToSlack(text: String, channel: String){
     initialMessageParam["channel"] = channel
     initialMessageParam["username"] = "WhiskBot"
     
-    if let channelURL = getConstants(key:"slack_channel_url_\(channel.lowercased)"){
+    if let channelURL = getConstants(key:"slack_channel_url_\(channel.lowercased())"){
         initialMessageParam["url"] = channelURL
         
         if text.contains("to Slack"){

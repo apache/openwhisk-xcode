@@ -40,3 +40,15 @@ When looking to open up the playground, the extension looks for an app called `o
 One way to easily improve the speed of invoking the extension is to create a shortcut for it.  To do this, open Xcode Preferences -> Key Bindings, then search for OWPlaygrounds.  You can create your own shortcut to invoke the action.
 
 
+
+
+
+
+License
+
+Copyright 2015-2016 IBM Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License").
+
+Unless required by applicable law or agreed to in writing, software distributed under the license is distributed on an "as is" basis, without warranties or conditions of any kind, either express or implied. See the license for the specific language governing permissions and limitations under the license.
+

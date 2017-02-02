@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015-2016 IBM Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import KituraNet
 import Dispatch
@@ -8,15 +23,17 @@ import SwiftyJSON
 private func getConstants(key: String)->String? {
     var constants = [String:String]()
     
+    
+    
     // Conversation
-    constants["conversation_username"] = "eaebcebc-def4-4497-a6a0-6b4dceef6348"
+    constants["conversation_username"] = <#conversation_username#>
     //Does not require Colon seperating username and password
-    constants["conversation_password"] = "IKRD6kjv8Fvu"
-    constants["conversation_workspace_id"] = "ba7fb238-bd2d-4cb9-9daf-c33c07469636"
+    constants["conversation_password"] = <#conversation_password#>
+    constants["conversation_workspace_id"] = <#conversation_workspace_id#>
 
     // Translation
-    constants["translation_username"] = "184ed675-a0ab-44d4-8fe7-851a35e31636"
-    constants["translation_password"] = "XDMeMlwEnkdu"
+    constants["translation_username"] = <#translation_username#>
+    constants["translation_password"] = <#translation_password#>
     constants["translation_from_language"] = "en"
     
     // Translation supportedLanguages
@@ -27,10 +44,11 @@ private func getConstants(key: String)->String? {
     constants["translation_language_arabic"] = "ar"
     constants["translation_language_korean"] = "ko"
     
+    
     // Modify the URL Hooks in order to post to different teams  (https://api.slack.com/incoming-webhooks)
     // To add more channels, add them in the IBM Watson Conversation Entities, under @slack_channels.  Then add a response in Dialog for the different channels.
-    constants["slack_channel_url_general"] = "https://hooks.slack.com/services/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"
-    constants["slack_channel_url_random"] = "https://hooks.slack.com/services/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"
+    constants["slack_channel_url_general"] = <#slack_channel_url#>
+    constants["slack_channel_url_random"] = <#slack_channel_url#>
     
     return constants[key]
 }

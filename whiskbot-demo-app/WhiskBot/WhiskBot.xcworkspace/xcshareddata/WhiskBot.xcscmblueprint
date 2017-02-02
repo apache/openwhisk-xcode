@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83" : 9223372036854775807,
+    "E9057848A6186DD9CAE5574816428252CA2E16CD" : 9223372036854775807,
+    "A8701B03A3B0BD7AB86119B23218B394663BB517" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "020A60EC-934E-4F29-990C-53079B48766E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83" : "WhiskBot\/",
+    "E9057848A6186DD9CAE5574816428252CA2E16CD" : "..",
+    "A8701B03A3B0BD7AB86119B23218B394663BB517" : "..\/CognitiveConciergeTest\/CognitiveConciergeTest"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "WhiskBot",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "WhiskBot.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Averylamp\/WhiskBot.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-MIL\/CognitiveConcierge",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A8701B03A3B0BD7AB86119B23218B394663BB517"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Averylamp\/openwhisk-xcode.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E9057848A6186DD9CAE5574816428252CA2E16CD"
+    }
+  ]
+}

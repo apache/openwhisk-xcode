@@ -13,11 +13,13 @@ The backend of WhiskBot is built with OpenWhisk actions.  There is a main Conver
 
 To upload the Actions to OpenWhisk, you can either use the Command Line Interface or the Web Browser. [Get set up with OpenWhisk](https://console.ng.bluemix.net/openwhisk/getting-started)
 
+
 #### Setting up the OpenWhisk Swift Client SDK
 
 After all of the Actions are uploaded to IBM Bluemix, they are invoked with the app by using the [OpenWhisk Swift Client SDK](https://github.com/openwhisk/openwhisk-client-swift).  To install the Swift Client SDK, simply run `pod install` from the directory of the demo app.  
 
 Along with the installation, the SDK has two credentials needed.  OpenWhisk has an Access Token and an Access Key that need to be updated inside the `IBMConstants.plist` file found in the main directory.  
+
 
 In order to find the tokens, you can either use the CLI as documented in the [OpenWhisk Swift Client SDK](https://github.com/openwhisk/openwhisk-client-swift) README.
 
@@ -33,6 +35,7 @@ The WhiskBot Workspace is saved as a json in app directory, named `ConversationW
 
 After the Workspace is imported, you should be able to test the conversation with the Demo Side bar.
 
+
 To complete the connections between the Conversation Workspace and the actions, there are three keys that are necessary to find.  The `conversation_workspace_id`, `conversation_username`, and `conversation_password`.  All three keys should be input into the `getConstants` function, found in the OpenWhisk ConversationAction.Swift file.
 
 To find the `conversation_workspace_id`, follow the instructions [here](https://www.ibm.com/blogs/bluemix/2016/12/mobile-chatbot-cognitive-concierge/).
@@ -43,7 +46,13 @@ To find the `conversation_username` and `conversation_password`, use the followi
 
 To set up the Watson Language Translator Service, it is quite straightforward.  Simply go yo the [Watson Language Translator Website](https://www.ibm.com/watson/developercloud/language-translator.html) and click start free in Bluemix.  Name the service with whatever name you want.  
 
+
 There are two keys that are necessary to use the Watson Language Translator Service, `translation_username` and `translation_password`.  The same link above used to find the Watson Conversation Service Authentication keys will get you to the Translator keys.  [Obtaining Credentials for Watson Services](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml)
+
+#### Setting up Slack Webhooks
+
+In order to give WhiskBot the ability to post to Slack, your Slack group needs webhook integration.  In order to setup URL Hooks for slack use the following [setup link](https://api.slack.com/custom-integrations).  You can setup webhook urls for different channels.  To add the channels to the OpenWhisk Action, under `getConstants` in `ConversationAction.swift`, there are `slack_channel_url_channelName` keys.  Add your own channelName and URL and modify the Conversation Workspace entity @slack_channels, to allow WhiskBot to pick up different channel names.
+
 
 
 

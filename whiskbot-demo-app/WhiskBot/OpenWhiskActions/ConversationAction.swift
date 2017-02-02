@@ -19,6 +19,14 @@ private func getConstants(key: String)->String? {
     constants["translation_password"] = "XDMeMlwEnkdu"
     constants["translation_from_language"] = "en"
     
+    // Translation supportedLanguages
+    // -  In order to add more languages, check if they are supported (https://www.ibm.com/watson/developercloud/language-translator.html)
+    // -  Add the language to the Entity @language, and modify the Dialog to be consistent with the language
+    constants["translation_language_spanish"] = "es"
+    constants["translation_language_french"] = "fr"
+    constants["translation_language_arabic"] = "ar"
+    constants["translation_language_korean"] = "ko"
+    
     // Modify the URL Hooks in order to post to different teams  (https://api.slack.com/incoming-webhooks)
     // To add more channels, add them in the IBM Watson Conversation Entities, under @slack_channels.  Then add a response in Dialog for the different channels.
     constants["slack_channel_url_general"] = "https://hooks.slack.com/services/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"
@@ -73,10 +81,13 @@ private func checkForTranslation(convoResponse: JSON) -> JSON{
                 if let dict = entity as? [String:Any]{
                     if dict["entity"] as? String == "language" {
                         let entityValue = dict["value"] as! String
-                        let supportedLanguages = ["spanish":"es", "french":"fr", "arabic":"ar","japanese":"ja", "korean":"ko"]
-                        let language = supportedLanguages[entityValue.lowercased()]
-                        editedResponse!["context"]["current_language_translation"].string = language
-                        print("Language detected - \(entityValue)")
+                        if let language = getConstants(key:"translation_language_\(entityValue.lowercased())") {
+                            editedResponse!["context"]["current_language_translation"].string = language
+                            print("Language detected - \(entityValue)")
+                        }else{
+                            print("Language not detected - Put spanish as default language")
+                            editedResponse!["context"]["current_language_translation"].string = "es"
+                        }
                     }
                 }
             }

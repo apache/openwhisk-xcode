@@ -22,3 +22,6 @@ Along with the installation, the SDK has two credentials needed.  OpenWhisk has 
 In order to find the tokens, you can either use the CLI as documented in the [OpenWhisk Swift Client SDK](https://github.com/openwhisk/openwhisk-client-swift) README.
 
 Or you can go to the [OpenWhisk Bluemix website](https://console.ng.bluemix.net/openwhisk/learn/cli) and under Step 2. copy the Authorization Key and Token.  Found in the command `wsk property set --apihost openwhisk.ng.bluemix.net --auth key:token`
+
+
+#### Setting up the Watson Conversation Service

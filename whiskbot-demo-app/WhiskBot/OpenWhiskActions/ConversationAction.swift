@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015-2016 IBM Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import KituraNet
 import Dispatch
@@ -26,6 +41,7 @@ private func getConstants(key: String)->String? {
     constants["translation_language_french"] = "fr"
     constants["translation_language_arabic"] = "ar"
     constants["translation_language_korean"] = "ko"
+    
     
     // Modify the URL Hooks in order to post to different teams  (https://api.slack.com/incoming-webhooks)
     // To add more channels, add them in the IBM Watson Conversation Entities, under @slack_channels.  Then add a response in Dialog for the different channels.

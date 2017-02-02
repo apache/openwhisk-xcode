@@ -8,10 +8,10 @@
 
 To invoke the extension, simply select the function header then run the extension.
 
-![Highlighting function](/Readme_Images/SelectFunction.png)
+![Highlighting function](/xcode-playgrounds-extension/Readme_Images/SelectFunction.png)
 
 The extension can be found in the Editor Menu, under OWPlaygrounds.  
-![Run Extension from Editor menu](/Readme_Images/RunExtension.png)
+![Run Extension from Editor menu](/xcode-playgrounds-extension/Readme_Images/RunExtension.png)
 
 The first time the extension is run, it will create documentation for the function to populate the test.  
 
@@ -19,7 +19,7 @@ The first time the extension is run, it will create documentation for the functi
 To input test values into the playground, the format `- paramName : description of parameter (optional) : param value for playground ` is used.  
 The parser looks only for `- paramName : : value`.  The description is not necessary, but the colons (:) seperating the paramName : Description : and test value are.  
 
-![Placeholders parameter example](/Readme_Images/DocumentationPlaceholders.png)
+![Placeholders parameter example](/xcode-playgrounds-extension/Readme_Images/DocumentationPlaceholders.png)
 
 If the extension does not find all of the  paramaters that are used in the function inside the documentation, it will recreate the documentation header.  
 

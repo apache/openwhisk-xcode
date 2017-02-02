@@ -1,0 +1,24 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'WhiskBot' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for WhiskBot
+
+  pod 'JSQMessagesViewController'
+  pod 'OpenWhisk', :git => 'https://github.com/openwhisk/openwhisk-client-swift.git', :tag => '0.2.2'
+  pod 'SwiftyJSON'
+
+  target 'WhiskBotTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'WhiskBotUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

@@ -15,6 +15,13 @@ The extension can be found in the Editor Menu, under OWPlaygrounds.
 
 The first time the extension is run, it will create documentation for the function to populate the test.  
 
+### Playground
+
+In order to use the extension, the playground must be installed as well.  To install the playground, [go here](https://github.com/openwhisk/openwhisk-playground)
+
+The playground app must also be named openwhisk-playground-osx.app
+
+
 #### Parameters
 To input test values into the playground, the format `- paramName : description of parameter (optional) : param value for playground ` is used.  
 The parser looks only for `- paramName : : value`.  The description is not necessary, but the colons (:) seperating the paramName : Description : and test value are.  
@@ -44,7 +51,7 @@ One way to easily improve the speed of invoking the extension is to create a sho
 
 
 
-License
+## License
 
 Copyright 2015-2016 IBM Corporation
 

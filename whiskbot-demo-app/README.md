@@ -57,3 +57,10 @@ In order to give WhiskBot the ability to post to Slack, your Slack group needs w
 
 
 
+License
+
+Copyright 2015-2016 IBM Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License").
+
+Unless required by applicable law or agreed to in writing, software distributed under the license is distributed on an "as is" basis, without warranties or conditions of any kind, either express or implied. See the license for the specific language governing permissions and limitations under the license.

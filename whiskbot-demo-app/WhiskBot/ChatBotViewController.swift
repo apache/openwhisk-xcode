@@ -37,8 +37,7 @@ class ChatBotViewController: JSQMessagesViewController, appleSpeechFeedbackProto
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let path = Bundle.main.path(forResource: "IBMConstants", ofType: "plist"), let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject], let accessKey = dict["whisk_access_key"] as? String, let accessToken = dict["whisk_access_token"] as? String {
-            
+        if let path = Bundle.main.path(forResource: "IBMConstants", ofType: "plist"), let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject], let accessKey = dict["whisk_access_key"] as? String, accessKey != "", let accessToken = dict["whisk_access_token"] as? String, accessToken != "" {
             let whiskCreds = WhiskCredentials(accessKey: accessKey, accessToken: accessToken)
             whisk = Whisk(credentials: whiskCreds)
             

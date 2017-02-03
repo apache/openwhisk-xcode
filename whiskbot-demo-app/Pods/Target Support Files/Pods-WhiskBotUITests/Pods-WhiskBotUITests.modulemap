@@ -1,0 +1,6 @@
+framework module Pods_WhiskBotUITests {
+  umbrella header "Pods-WhiskBotUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

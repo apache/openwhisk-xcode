@@ -101,7 +101,7 @@ open class ProjectManager {
                         try self.projectReader?.readRootDependencies(false)
                     }
                     try self.projectReader?.readProjectDirectory()
-                   // self.projectReader?.dumpProjectStructure()
+                    // self.projectReader?.dumpProjectStructure()
                     
                     try self.deleteRules()
                     try self.deleteActionsAndSequences()

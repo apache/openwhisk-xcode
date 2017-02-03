@@ -1,0 +1,31 @@
+PODS:
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
+  - OpenWhisk (0.2.2)
+  - SwiftyJSON (3.1.4)
+
+DEPENDENCIES:
+  - JSQMessagesViewController
+  - OpenWhisk (from `https://github.com/openwhisk/openwhisk-client-swift.git`, tag `0.2.2`)
+  - SwiftyJSON
+
+EXTERNAL SOURCES:
+  OpenWhisk:
+    :git: https://github.com/openwhisk/openwhisk-client-swift.git
+    :tag: 0.2.2
+
+CHECKOUT OPTIONS:
+  OpenWhisk:
+    :git: https://github.com/openwhisk/openwhisk-client-swift.git
+    :tag: 0.2.2
+
+SPEC CHECKSUMS:
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  OpenWhisk: 68be4ee6ca258051ee99323bd736317e550d1cf8
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+
+PODFILE CHECKSUM: de5a42b3844c628073a98f99a25585bf4c0f8131
+
+COCOAPODS: 1.1.1

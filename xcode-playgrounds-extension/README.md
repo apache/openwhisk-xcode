@@ -8,18 +8,25 @@
 
 To invoke the extension, simply select the function header then run the extension.
 
-![Highlighting function](/Readme_Images/SelectFunction.png)
+![Highlighting function](/xcode-playgrounds-extension/Readme_Images/SelectFunction.png)
 
 The extension can be found in the Editor Menu, under OWPlaygrounds.  
-![Run Extension from Editor menu](/Readme_Images/RunExtension.png)
+![Run Extension from Editor menu](/xcode-playgrounds-extension/Readme_Images/RunExtension.png)
 
 The first time the extension is run, it will create documentation for the function to populate the test.  
+
+### Playground
+
+In order to use the extension, the playground must be installed as well.  To install the playground, [go here](https://github.com/openwhisk/openwhisk-playground)
+
+The playground app must also be named openwhisk-playground-osx.app
+
 
 #### Parameters
 To input test values into the playground, the format `- paramName : description of parameter (optional) : param value for playground ` is used.  
 The parser looks only for `- paramName : : value`.  The description is not necessary, but the colons (:) seperating the paramName : Description : and test value are.  
 
-![Placeholders parameter example](/Readme_Images/DocumentationPlaceholders.png)
+![Placeholders parameter example](/xcode-playgrounds-extension/Readme_Images/DocumentationPlaceholders.png)
 
 If the extension does not find all of the  paramaters that are used in the function inside the documentation, it will recreate the documentation header.  
 
@@ -39,4 +46,16 @@ When looking to open up the playground, the extension looks for an app called `o
 
 One way to easily improve the speed of invoking the extension is to create a shortcut for it.  To do this, open Xcode Preferences -> Key Bindings, then search for OWPlaygrounds.  You can create your own shortcut to invoke the action.
 
+
+
+
+
+
+## License
+
+Copyright 2015-2016 IBM Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License").
+
+Unless required by applicable law or agreed to in writing, software distributed under the license is distributed on an "as is" basis, without warranties or conditions of any kind, either express or implied. See the license for the specific language governing permissions and limitations under the license.
 

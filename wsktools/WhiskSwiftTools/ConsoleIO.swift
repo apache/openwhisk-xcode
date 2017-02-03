@@ -49,7 +49,7 @@ enum OptionType: String {
             self = .Target
         case "t":
             self = .Target
-
+            
             
         default:
             self = .Undefined

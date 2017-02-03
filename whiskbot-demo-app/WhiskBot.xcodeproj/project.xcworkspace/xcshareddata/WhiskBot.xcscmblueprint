@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83" : 9223372036854775807,
+    "A8701B03A3B0BD7AB86119B23218B394663BB517" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4B04F5CE-9B5F-4C11-89AD-955B0FF77890",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83" : "WhiskBot\/",
+    "A8701B03A3B0BD7AB86119B23218B394663BB517" : "..\/CognitiveConciergeTest\/CognitiveConciergeTest"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "WhiskBot",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "WhiskBot.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Averylamp\/WhiskBot.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "356C0FA35D959FB8A0A4A9AFE0E4B13D2C073E83"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-MIL\/CognitiveConcierge",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A8701B03A3B0BD7AB86119B23218B394663BB517"
+    }
+  ]
+}

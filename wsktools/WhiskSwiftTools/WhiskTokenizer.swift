@@ -161,6 +161,7 @@ open class WhiskTokenizer {
         }
 
         
+        
         return (whiskActionArray, whiskTriggerArray, whiskRuleArray, whiskSequenceArray)
     }
     
@@ -328,4 +329,3 @@ open class WhiskTokenizer {
     }
     
 }
-

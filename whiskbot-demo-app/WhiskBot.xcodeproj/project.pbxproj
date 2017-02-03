@@ -1,0 +1,789 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4A803C1101B4B47DEB480A56 /* Pods_WhiskBot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2178B8DCD3FA3ED7852EC98 /* Pods_WhiskBot.framework */; };
+		7F0044F61E2FF88E002A4B05 /* ChatBotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0044F51E2FF88E002A4B05 /* ChatBotViewController.swift */; };
+		7F08F8831E43B8D400A2C875 /* IBMConstants.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F08F8821E43B8D400A2C875 /* IBMConstants.plist */; };
+		7F61C9AF1E3009EA00AF3443 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F61C9AE1E3009EA00AF3443 /* SpeechRecognizer.swift */; };
+		7F6E27BC1E2E73C50002E80B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27BB1E2E73C50002E80B /* AppDelegate.swift */; };
+		7F6E27BE1E2E73C50002E80B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27BD1E2E73C50002E80B /* ViewController.swift */; };
+		7F6E27C11E2E73C50002E80B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F6E27BF1E2E73C50002E80B /* Main.storyboard */; };
+		7F6E27C31E2E73C50002E80B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F6E27C21E2E73C50002E80B /* Assets.xcassets */; };
+		7F6E27C61E2E73C50002E80B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F6E27C41E2E73C50002E80B /* LaunchScreen.storyboard */; };
+		7F6E27D11E2E73C50002E80B /* WhiskBotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27D01E2E73C50002E80B /* WhiskBotTests.swift */; };
+		7F6E27DC1E2E73C50002E80B /* WhiskBotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27DB1E2E73C50002E80B /* WhiskBotUITests.swift */; };
+		7F6E27EA1E2EA9940002E80B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27E91E2EA9940002E80B /* SplashViewController.swift */; };
+		7F6E27EC1E2EA9E40002E80B /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E27EB1E2EA9E40002E80B /* ChatViewController.swift */; };
+		85DC49E165A8387295BD8BE6 /* Pods_WhiskBotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C614C16CF1D65C6B0416B9 /* Pods_WhiskBotUITests.framework */; };
+		B1BA3598E0AD211BFB984469 /* Pods_WhiskBotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A00927178E4BF4CD67E73AA1 /* Pods_WhiskBotTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7F6E27CD1E2E73C50002E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7F6E27B01E2E73C50002E80B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7F6E27B71E2E73C50002E80B;
+			remoteInfo = WhiskBot;
+		};
+		7F6E27D81E2E73C50002E80B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7F6E27B01E2E73C50002E80B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7F6E27B71E2E73C50002E80B;
+			remoteInfo = WhiskBot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7F254E4F1E2FCA4F0029B772 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		10D90A899043788B2F68746A /* Pods-WhiskBot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBot.release.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBot/Pods-WhiskBot.release.xcconfig"; sourceTree = "<group>"; };
+		2945C1CEF44B524E77D0E7DA /* Pods-WhiskBotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBotTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBotTests/Pods-WhiskBotTests.release.xcconfig"; sourceTree = "<group>"; };
+		53C614C16CF1D65C6B0416B9 /* Pods_WhiskBotUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhiskBotUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		607D45ACE515D6A5F008D842 /* Pods-WhiskBot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBot/Pods-WhiskBot.debug.xcconfig"; sourceTree = "<group>"; };
+		61F3AE277EAA256CEBA7BD62 /* Pods-WhiskBotUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBotUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBotUITests/Pods-WhiskBotUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		7F0044F51E2FF88E002A4B05 /* ChatBotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBotViewController.swift; sourceTree = "<group>"; };
+		7F08F8821E43B8D400A2C875 /* IBMConstants.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = IBMConstants.plist; sourceTree = "<group>"; };
+		7F0DDB211E3669EF00A7F99E /* ConversationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConversationAction.swift; path = OpenWhiskActions/ConversationAction.swift; sourceTree = "<group>"; };
+		7F254E411E2FC9AB0029B772 /* Build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Build; path = Carthage/Build; sourceTree = "<group>"; };
+		7F254E431E2FC9B70029B772 /* ConversationV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ConversationV1.framework; path = Carthage/Build/iOS/ConversationV1.framework; sourceTree = "<group>"; };
+		7F254E551E2FD67C0029B772 /* ConversationV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ConversationV1.framework; path = "../../CognitiveConciergeTest/CognitiveConciergeTest/CognitiveConcierge-iOS/Carthage/Build/iOS/ConversationV1.framework"; sourceTree = "<group>"; };
+		7F254E591E2FD79D0029B772 /* RestKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RestKit.framework; path = Carthage/Build/iOS/RestKit.framework; sourceTree = "<group>"; };
+		7F61C9AE1E3009EA00AF3443 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		7F6E27B81E2E73C50002E80B /* WhiskBot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhiskBot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F6E27BB1E2E73C50002E80B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7F6E27BD1E2E73C50002E80B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7F6E27C01E2E73C50002E80B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7F6E27C21E2E73C50002E80B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7F6E27C51E2E73C50002E80B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7F6E27C71E2E73C50002E80B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F6E27CC1E2E73C50002E80B /* WhiskBotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhiskBotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F6E27D01E2E73C50002E80B /* WhiskBotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiskBotTests.swift; sourceTree = "<group>"; };
+		7F6E27D21E2E73C50002E80B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F6E27D71E2E73C50002E80B /* WhiskBotUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhiskBotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F6E27DB1E2E73C50002E80B /* WhiskBotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiskBotUITests.swift; sourceTree = "<group>"; };
+		7F6E27DD1E2E73C50002E80B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F6E27E91E2EA9940002E80B /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		7F6E27EB1E2EA9E40002E80B /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		7FA3161B1E438AD50018E364 /* PostToSlack.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = PostToSlack.js; path = OpenWhiskActions/PostToSlack.js; sourceTree = "<group>"; };
+		7FA3161C1E438AD50018E364 /* TranslatorAction.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = TranslatorAction.js; path = OpenWhiskActions/TranslatorAction.js; sourceTree = "<group>"; };
+		8F521B1C934121C1C296CCF8 /* Pods-WhiskBotUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBotUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBotUITests/Pods-WhiskBotUITests.release.xcconfig"; sourceTree = "<group>"; };
+		A00927178E4BF4CD67E73AA1 /* Pods_WhiskBotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhiskBotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2178B8DCD3FA3ED7852EC98 /* Pods_WhiskBot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhiskBot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED94B5A49FAF65F34AF6C43D /* Pods-WhiskBotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhiskBotTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WhiskBotTests/Pods-WhiskBotTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7F6E27B51E2E73C50002E80B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A803C1101B4B47DEB480A56 /* Pods_WhiskBot.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6E27C91E2E73C50002E80B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1BA3598E0AD211BFB984469 /* Pods_WhiskBotTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6E27D41E2E73C50002E80B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85DC49E165A8387295BD8BE6 /* Pods_WhiskBotUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		205F0F5297F3FBC7E78CFCFD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				607D45ACE515D6A5F008D842 /* Pods-WhiskBot.debug.xcconfig */,
+				10D90A899043788B2F68746A /* Pods-WhiskBot.release.xcconfig */,
+				ED94B5A49FAF65F34AF6C43D /* Pods-WhiskBotTests.debug.xcconfig */,
+				2945C1CEF44B524E77D0E7DA /* Pods-WhiskBotTests.release.xcconfig */,
+				61F3AE277EAA256CEBA7BD62 /* Pods-WhiskBotUITests.debug.xcconfig */,
+				8F521B1C934121C1C296CCF8 /* Pods-WhiskBotUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7F254E401E2FC9A90029B772 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7F254E591E2FD79D0029B772 /* RestKit.framework */,
+				7F254E551E2FD67C0029B772 /* ConversationV1.framework */,
+				7F254E431E2FC9B70029B772 /* ConversationV1.framework */,
+				7F254E411E2FC9AB0029B772 /* Build */,
+				D2178B8DCD3FA3ED7852EC98 /* Pods_WhiskBot.framework */,
+				A00927178E4BF4CD67E73AA1 /* Pods_WhiskBotTests.framework */,
+				53C614C16CF1D65C6B0416B9 /* Pods_WhiskBotUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7F641C931E3145CA0004BEDF /* OpenWhisk Actions */ = {
+			isa = PBXGroup;
+			children = (
+				7FA3161B1E438AD50018E364 /* PostToSlack.js */,
+				7FA3161C1E438AD50018E364 /* TranslatorAction.js */,
+				7F0DDB211E3669EF00A7F99E /* ConversationAction.swift */,
+			);
+			name = "OpenWhisk Actions";
+			sourceTree = "<group>";
+		};
+		7F6E27AF1E2E73C50002E80B = {
+			isa = PBXGroup;
+			children = (
+				7F6E27BA1E2E73C50002E80B /* WhiskBot */,
+				7F6E27CF1E2E73C50002E80B /* WhiskBotTests */,
+				7F6E27DA1E2E73C50002E80B /* WhiskBotUITests */,
+				7F6E27B91E2E73C50002E80B /* Products */,
+				7F254E401E2FC9A90029B772 /* Frameworks */,
+				205F0F5297F3FBC7E78CFCFD /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		7F6E27B91E2E73C50002E80B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E27B81E2E73C50002E80B /* WhiskBot.app */,
+				7F6E27CC1E2E73C50002E80B /* WhiskBotTests.xctest */,
+				7F6E27D71E2E73C50002E80B /* WhiskBotUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7F6E27BA1E2E73C50002E80B /* WhiskBot */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E27BB1E2E73C50002E80B /* AppDelegate.swift */,
+				7F6E27BD1E2E73C50002E80B /* ViewController.swift */,
+				7F6E27E91E2EA9940002E80B /* SplashViewController.swift */,
+				7F6E27BF1E2E73C50002E80B /* Main.storyboard */,
+				7F6E27EB1E2EA9E40002E80B /* ChatViewController.swift */,
+				7F0044F51E2FF88E002A4B05 /* ChatBotViewController.swift */,
+				7F08F8821E43B8D400A2C875 /* IBMConstants.plist */,
+				7F61C9AE1E3009EA00AF3443 /* SpeechRecognizer.swift */,
+				7F641C931E3145CA0004BEDF /* OpenWhisk Actions */,
+				7F6E27C21E2E73C50002E80B /* Assets.xcassets */,
+				7F6E27C41E2E73C50002E80B /* LaunchScreen.storyboard */,
+				7F6E27C71E2E73C50002E80B /* Info.plist */,
+			);
+			path = WhiskBot;
+			sourceTree = "<group>";
+		};
+		7F6E27CF1E2E73C50002E80B /* WhiskBotTests */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E27D01E2E73C50002E80B /* WhiskBotTests.swift */,
+				7F6E27D21E2E73C50002E80B /* Info.plist */,
+			);
+			path = WhiskBotTests;
+			sourceTree = "<group>";
+		};
+		7F6E27DA1E2E73C50002E80B /* WhiskBotUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E27DB1E2E73C50002E80B /* WhiskBotUITests.swift */,
+				7F6E27DD1E2E73C50002E80B /* Info.plist */,
+			);
+			path = WhiskBotUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7F6E27B71E2E73C50002E80B /* WhiskBot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F6E27E01E2E73C50002E80B /* Build configuration list for PBXNativeTarget "WhiskBot" */;
+			buildPhases = (
+				6946A633B00338DB9F586232 /* [CP] Check Pods Manifest.lock */,
+				7F6E27B41E2E73C50002E80B /* Sources */,
+				7F6E27B51E2E73C50002E80B /* Frameworks */,
+				7F6E27B61E2E73C50002E80B /* Resources */,
+				7F254E4F1E2FCA4F0029B772 /* Embed Frameworks */,
+				0EE5E942EB14E2A6A3036DA7 /* [CP] Embed Pods Frameworks */,
+				D9E43EAB6653C21A448C2DE0 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WhiskBot;
+			productName = WhiskBot;
+			productReference = 7F6E27B81E2E73C50002E80B /* WhiskBot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7F6E27CB1E2E73C50002E80B /* WhiskBotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F6E27E31E2E73C50002E80B /* Build configuration list for PBXNativeTarget "WhiskBotTests" */;
+			buildPhases = (
+				D06E1DE8E4D183B5236BD422 /* [CP] Check Pods Manifest.lock */,
+				7F6E27C81E2E73C50002E80B /* Sources */,
+				7F6E27C91E2E73C50002E80B /* Frameworks */,
+				7F6E27CA1E2E73C50002E80B /* Resources */,
+				66B4729EE868BC56B83B4518 /* [CP] Embed Pods Frameworks */,
+				D8CFB8DF973640C14DDA9C71 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7F6E27CE1E2E73C50002E80B /* PBXTargetDependency */,
+			);
+			name = WhiskBotTests;
+			productName = WhiskBotTests;
+			productReference = 7F6E27CC1E2E73C50002E80B /* WhiskBotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7F6E27D61E2E73C50002E80B /* WhiskBotUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F6E27E61E2E73C50002E80B /* Build configuration list for PBXNativeTarget "WhiskBotUITests" */;
+			buildPhases = (
+				F741D44D50DB185CDFFB8003 /* [CP] Check Pods Manifest.lock */,
+				7F6E27D31E2E73C50002E80B /* Sources */,
+				7F6E27D41E2E73C50002E80B /* Frameworks */,
+				7F6E27D51E2E73C50002E80B /* Resources */,
+				E0607CEF3BDE1BF4E3876F2C /* [CP] Embed Pods Frameworks */,
+				85628A6BD4F65CA247CADE61 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7F6E27D91E2E73C50002E80B /* PBXTargetDependency */,
+			);
+			name = WhiskBotUITests;
+			productName = WhiskBotUITests;
+			productReference = 7F6E27D71E2E73C50002E80B /* WhiskBotUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7F6E27B01E2E73C50002E80B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Avery Lamp";
+				TargetAttributes = {
+					7F6E27B71E2E73C50002E80B = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 9XWYL3K4YT;
+						ProvisioningStyle = Automatic;
+					};
+					7F6E27CB1E2E73C50002E80B = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7F6E27B71E2E73C50002E80B;
+					};
+					7F6E27D61E2E73C50002E80B = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7F6E27B71E2E73C50002E80B;
+					};
+				};
+			};
+			buildConfigurationList = 7F6E27B31E2E73C50002E80B /* Build configuration list for PBXProject "WhiskBot" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7F6E27AF1E2E73C50002E80B;
+			productRefGroup = 7F6E27B91E2E73C50002E80B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7F6E27B71E2E73C50002E80B /* WhiskBot */,
+				7F6E27CB1E2E73C50002E80B /* WhiskBotTests */,
+				7F6E27D61E2E73C50002E80B /* WhiskBotUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7F6E27B61E2E73C50002E80B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F6E27C61E2E73C50002E80B /* LaunchScreen.storyboard in Resources */,
+				7F08F8831E43B8D400A2C875 /* IBMConstants.plist in Resources */,
+				7F6E27C31E2E73C50002E80B /* Assets.xcassets in Resources */,
+				7F6E27C11E2E73C50002E80B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6E27CA1E2E73C50002E80B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6E27D51E2E73C50002E80B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0EE5E942EB14E2A6A3036DA7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WhiskBot/Pods-WhiskBot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66B4729EE868BC56B83B4518 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WhiskBotTests/Pods-WhiskBotTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6946A633B00338DB9F586232 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		85628A6BD4F65CA247CADE61 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WhiskBotUITests/Pods-WhiskBotUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D06E1DE8E4D183B5236BD422 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D8CFB8DF973640C14DDA9C71 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WhiskBotTests/Pods-WhiskBotTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D9E43EAB6653C21A448C2DE0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WhiskBot/Pods-WhiskBot-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0607CEF3BDE1BF4E3876F2C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WhiskBotUITests/Pods-WhiskBotUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F741D44D50DB185CDFFB8003 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7F6E27B41E2E73C50002E80B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F6E27EA1E2EA9940002E80B /* SplashViewController.swift in Sources */,
+				7F6E27BE1E2E73C50002E80B /* ViewController.swift in Sources */,
+				7F0044F61E2FF88E002A4B05 /* ChatBotViewController.swift in Sources */,
+				7F6E27EC1E2EA9E40002E80B /* ChatViewController.swift in Sources */,
+				7F6E27BC1E2E73C50002E80B /* AppDelegate.swift in Sources */,
+				7F61C9AF1E3009EA00AF3443 /* SpeechRecognizer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6E27C81E2E73C50002E80B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F6E27D11E2E73C50002E80B /* WhiskBotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F6E27D31E2E73C50002E80B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F6E27DC1E2E73C50002E80B /* WhiskBotUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7F6E27CE1E2E73C50002E80B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7F6E27B71E2E73C50002E80B /* WhiskBot */;
+			targetProxy = 7F6E27CD1E2E73C50002E80B /* PBXContainerItemProxy */;
+		};
+		7F6E27D91E2E73C50002E80B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7F6E27B71E2E73C50002E80B /* WhiskBot */;
+			targetProxy = 7F6E27D81E2E73C50002E80B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7F6E27BF1E2E73C50002E80B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F6E27C01E2E73C50002E80B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		7F6E27C41E2E73C50002E80B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F6E27C51E2E73C50002E80B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7F6E27DE1E2E73C50002E80B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7F6E27DF1E2E73C50002E80B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7F6E27E11E2E73C50002E80B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 607D45ACE515D6A5F008D842 /* Pods-WhiskBot.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = WhiskBot/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = IBM.WhiskBot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		7F6E27E21E2E73C50002E80B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10D90A899043788B2F68746A /* Pods-WhiskBot.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = WhiskBot/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = IBM.WhiskBot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		7F6E27E41E2E73C50002E80B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED94B5A49FAF65F34AF6C43D /* Pods-WhiskBotTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = WhiskBotTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = IBM.WhiskBotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhiskBot.app/WhiskBot";
+			};
+			name = Debug;
+		};
+		7F6E27E51E2E73C50002E80B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2945C1CEF44B524E77D0E7DA /* Pods-WhiskBotTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = WhiskBotTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = IBM.WhiskBotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhiskBot.app/WhiskBot";
+			};
+			name = Release;
+		};
+		7F6E27E71E2E73C50002E80B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61F3AE277EAA256CEBA7BD62 /* Pods-WhiskBotUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = WhiskBotUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = IBM.WhiskBotUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = WhiskBot;
+			};
+			name = Debug;
+		};
+		7F6E27E81E2E73C50002E80B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F521B1C934121C1C296CCF8 /* Pods-WhiskBotUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = WhiskBotUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = IBM.WhiskBotUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = WhiskBot;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7F6E27B31E2E73C50002E80B /* Build configuration list for PBXProject "WhiskBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F6E27DE1E2E73C50002E80B /* Debug */,
+				7F6E27DF1E2E73C50002E80B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F6E27E01E2E73C50002E80B /* Build configuration list for PBXNativeTarget "WhiskBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F6E27E11E2E73C50002E80B /* Debug */,
+				7F6E27E21E2E73C50002E80B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F6E27E31E2E73C50002E80B /* Build configuration list for PBXNativeTarget "WhiskBotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F6E27E41E2E73C50002E80B /* Debug */,
+				7F6E27E51E2E73C50002E80B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F6E27E61E2E73C50002E80B /* Build configuration list for PBXNativeTarget "WhiskBotUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F6E27E71E2E73C50002E80B /* Debug */,
+				7F6E27E81E2E73C50002E80B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7F6E27B01E2E73C50002E80B /* Project object */;
+}

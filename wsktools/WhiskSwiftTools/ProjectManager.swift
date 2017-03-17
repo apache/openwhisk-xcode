@@ -326,8 +326,6 @@ open class ProjectManager {
             
             var runtimeStr = "nodejs"
             switch runtime {
-            case Runtime.swift:
-                runtimeStr = "swift"
             case Runtime.swift3:
                 runtimeStr = "swift:3"
             case Runtime.python:

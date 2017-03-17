@@ -34,7 +34,6 @@ public enum WhiskProjectError: Error {
 }
 
 enum Runtime {
-    case swift
     case swift3
     case nodeJS
     case java
@@ -296,7 +295,7 @@ open class ProjectReader {
                                 }
                                 
                             }  else if item.hasSuffix(".swift") {
-                                try addAction(fullPath as NSString, item: item, runtime: .swift)
+                                try addAction(fullPath as NSString, item: item, runtime: .swift3)
                             }  else if item.hasSuffix(".js") {
                                 try addAction(fullPath as NSString, item: item, runtime: .nodeJS)
                             } else if item.hasSuffix(".json") {
@@ -499,7 +498,7 @@ open class ProjectReader {
                     if let item = actionsDict[(prefix+itemName) as NSString] {
                         var runtime = item.runtime
                         if let kind = action["kind"] as? String {
-                            if runtime == Runtime.swift && kind == "swift:3" {
+                            if runtime == Runtime.swift3 && kind == "swift:3" {
                                 runtime = Runtime.swift3
                             }
                         }

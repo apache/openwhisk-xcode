@@ -61,7 +61,7 @@ class Git {
                 }
             } else {
                 // Failure
-                print("Failure cloning \(repo): %@", error?.localizedDescription);
+                print("Failure cloning \(repo): %@", error?.localizedDescription ?? "unknown error");
             }
             
             group.leave()

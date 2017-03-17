@@ -9,20 +9,20 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "06E1D60A-07E3-45BC-8101-A3D050C33727",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "65E71B0513DBFB09F39CEEF3A8B769CB93E66994" : "ZipArchive\/",
-    "E9057848A6186DD9CAE5574816428252CA2E16CD" : "WhiskSwiftTools\/"
+    "65E71B0513DBFB09F39CEEF3A8B769CB93E66994" : "openwhisk-xcode\/ZipArchive\/",
+    "E9057848A6186DD9CAE5574816428252CA2E16CD" : "openwhisk-xcode\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "WhiskSwiftTools",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
-  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "WhiskSwiftTools.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "wsktools\/WhiskSwiftTools.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ZipArchive\/ZipArchive",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ZipArchive\/ZipArchive.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "65E71B0513DBFB09F39CEEF3A8B769CB93E66994"
     },
     {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:paulcastro\/WhiskSwiftTools.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:openwhisk\/openwhisk-xcode.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E9057848A6186DD9CAE5574816428252CA2E16CD"
     }

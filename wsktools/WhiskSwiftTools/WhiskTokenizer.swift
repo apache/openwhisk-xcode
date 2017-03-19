@@ -120,7 +120,7 @@ open class WhiskTokenizer {
                                                 let fileUrl = URL(fileURLWithPath: actionPath)
                                                 try action.actionCode.write(to: fileUrl, atomically: false, encoding: String.Encoding.utf8)
                                                 
-                                                let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift3, parameters: nil)
+                                                let whiskAction = Action(name: action.actionName as NSString, path: actionPath as NSString, runtime: Runtime.swift, parameters: nil)
                                                 
                                                 whiskActionArray.append(whiskAction)
                                                 

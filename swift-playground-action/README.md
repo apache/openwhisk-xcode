@@ -11,12 +11,15 @@ Then inside container run basic test
 
 ```
 time /usr/bin/swift /share/test0.swift
+Hello World
 ```
+
 
 and using dynamic library inside REPL calling SwiftyJSON:
 
 ```
 time swift -I/swift3Action/spm-build/.build/debug -L /swift3Action/spm-build/.build/debug -lSwiftyJSON /share/test1.swift
+Hello Joe Doe
 ```
 
 ## Current issues - unable to build dynamic version of OpenSSL library

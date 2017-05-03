@@ -20,28 +20,35 @@ import SwiftyJSON
 import Conversation
 import RestKit
 
-//let json: JSON = "I'm a json"
-// let json = JSON(["name":"Paul", "age": 25])
-// if let name = json["name"].string {
-//    print("Hello ", name);
-// }
+//var serviceURL = "https://jsonplaceholder.typicode.com"
 
 let username = "aa50bee6-a71b-47d3-8dca-e23b628315e3"
 let password = "mtqVUlA5WCZy"
-let version = "2016-07-19" // use today's date for the most recent version
-let conversation = Conversation(username: username, password: password, version: version)
+let version = "2016-07-19" 
 
-let workspaceID = "b4ff2246-c42f-407e-b172-72a631cf5498"
+var serviceURL = "https://gateway.watsonplatform.net/conversation/api"
+
+var queryParameters = [URLQueryItem]()
+queryParameters.append(URLQueryItem(name: "version", value: version))
+
+let request = RestRequest(
+        method: .GET,
+        url: serviceURL + "/v1/workspaces",
+        acceptType: "application/json",
+        contentType: "application/json",
+        queryParameters: queryParameters,
+        username: username,
+        password: password         
+    )
+
 let failure = { (error: RestError) in print("error", error) }
-var context: Context? // save context to continue conversation
-var text = "hello"
-conversation.message(workspaceID: workspaceID, text: text, failure: failure) { response in
-    //print(response.output.text)
-    print("response",response)
-    context = response.context
-}
 
-// conversation.message(workspaceID: workspaceID, text: text, context: context, failure: failure) { response in
-//     print(response.output.text)
-//     context = response.context
-// }
+let success = { (msg) in print("success", msg) }
+
+// execute REST request
+request.responseJSON { response in
+    switch response {
+    case .success(let json): success(json)
+    case .failure(let error): failure(error)
+    }
+}

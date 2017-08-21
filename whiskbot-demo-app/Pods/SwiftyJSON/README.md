@@ -91,7 +91,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-	pod 'SwiftyJSON'
+  pod 'SwiftyJSON'
 end
 ```
 
@@ -126,7 +126,7 @@ Note that the [Swift Package Manager](https://swift.org/package-manager) is stil
 
 #### Manually (iOS 7+, OS X 10.9+)
 
-To use this library in your project manually you may:  
+To use this library in your project manually you may:
 
 1. for Projects, just drag SwiftyJSON.swift to the project tree
 2. for Workspaces, include the whole SwiftyJSON.xcodeproj
@@ -449,7 +449,7 @@ It is possible to merge one JSON into another JSON. Merging a JSON into another 
 
 If both JSONs contain a value for the same key, _mostly_ this value gets overwritten in the original JSON, but there are two cases where it provides some special treatment:
 
-- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value. 
+- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value.
 - In case of both values being a `JSON.Type.dictionary` both JSON-values are getting merged the same way the encapsulating JSON is merged.
 
 In case, where two fields in a JSON have a different types, the value will get always overwritten.
